@@ -1,0 +1,27 @@
+//
+//  WTText.swift
+//  WTScan
+//
+//  Created by IMac on 12/11/25.
+//
+
+import SwiftUI
+
+struct WTText: View {
+    let title: String
+    let color: Color
+    let font: Font
+    var alignment: TextAlignment = .leading
+    var minimumScale: CGFloat = 1.0
+    var lineLimit: Int? = nil
+    
+    var body: some View {
+        Text(title)
+            .font(font)
+            .foregroundStyle(color)
+            .multilineTextAlignment(alignment)
+            .minimumScaleFactor(minimumScale)
+            .lineLimit(lineLimit)
+            
+    }
+}
