@@ -8,6 +8,7 @@
 import SwiftUI
 import AVFoundation
 import AVKit
+import PhotosUI
 
 struct PostPreviewView: View {
     let downloadedVideoURL: DownloadVideoItem
@@ -15,8 +16,28 @@ struct PostPreviewView: View {
     @State private var player: AVPlayer?
     @State private var isPlaying = false
     
+    func saveVideoToPhotos(from fileURL: URL) {
+        PHPhotoLibrary.requestAuthorization { status in
+            guard status == .authorized || status == .limited else {
+                print("❌ Photo permission denied")
+                return
+            }
+            PHPhotoLibrary.shared().performChanges({
+                PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: fileURL)
+            }) { success, error in
+                DispatchQueue.main.async {
+                    if success {
+                        print("✅ Video saved to Photos")
+                    } else {
+                        print("❌ Failed to save video:", error?.localizedDescription ?? "unknown error")
+                    }
+                }
+            }
+        }
+    }
+    
     func downloadVideoButtonAction() {
-        
+        self.saveVideoToPhotos(from: downloadedVideoURL.url)
     }
     
     @ViewBuilder func SideView(icon: String, text: String) -> some View {
@@ -52,18 +73,22 @@ struct PostPreviewView: View {
                     AppVideoPlayer(player: player)
                         .ignoresSafeArea()
                         .padding(.top, 61)
-                    Button {
-                        if player.timeControlStatus == .playing {
-                            player.pause()
-                            isPlaying = false
-                        } else {
-                            player.play()
-                            isPlaying = true
+                    Color.clear
+                        .contentShape(Rectangle()) // 👈 important
+                        .onTapGesture {
+                            if player.timeControlStatus == .playing {
+                                player.pause()
+                                isPlaying = false
+                            } else {
+                                player.play()
+                                isPlaying = true
+                            }
                         }
-                    } label: {
-                        Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                        .padding(.top, 61)
+                    if !isPlaying {
+                        Image(systemName: "play.circle.fill")
                             .resizable()
-                            .frame(width: 40, height: 40)
+                            .frame(width: 50, height: 50)
                             .foregroundStyle(.white)
                             .padding()
                     }
@@ -161,6 +186,18 @@ struct PostPreviewView: View {
                 player = AVPlayer(url: downloadedVideoURL.url)
                 player?.play()
                 isPlaying = true
+                NotificationCenter.default.addObserver(
+                        forName: .AVPlayerItemDidPlayToEndTime,
+                        object: player!.currentItem,
+                        queue: .main
+                    ) { _ in
+                        player!.seek(to: .zero)
+                        player!.play()
+                        isPlaying = true
+                    }
+            }
+            .onDisappear {
+                NotificationCenter.default.removeObserver(self)
             }
         }
     }
