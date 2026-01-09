@@ -48,12 +48,34 @@ final class VideoDownloader {
             print("📦 Headers:", http.allHeaderFields)
             throw URLError(.badServerResponse)
         }
-        let fileURL = FileManager.default
-            .temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension("mp4")
-        try data.write(to: fileURL)
-        print("✅ Video saved at:", fileURL)
-        return fileURL
+        
+        
+        // MARK: - Documents/Videos directory
+        let fileManager = FileManager.default
+        let documentsURL = try fileManager.url(
+            for: .documentDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+        let videosDirectory = documentsURL.appendingPathComponent("App_Media", isDirectory: true)
+        // Create folder if needed
+        if !fileManager.fileExists(atPath: videosDirectory.path) {
+            try fileManager.createDirectory(
+                at: videosDirectory,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
+        }
+        // MARK: - Fixed file name (replace previous)
+        let videoFileURL = videosDirectory.appendingPathComponent("app_video.mp4")
+        // Remove existing file if present
+        if fileManager.fileExists(atPath: videoFileURL.path) {
+            try fileManager.removeItem(at: videoFileURL)
+        }
+        // Save new video
+        try data.write(to: videoFileURL, options: .atomic)
+        print("✅ Video saved at:", videoFileURL)
+        return videoFileURL
     }
 }

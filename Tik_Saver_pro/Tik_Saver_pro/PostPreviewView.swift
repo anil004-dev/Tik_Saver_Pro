@@ -11,6 +11,7 @@ import AVKit
 
 struct PostPreviewView: View {
     let downloadedVideoURL: DownloadVideoItem
+    let post: TikTokPost
     @State private var player: AVPlayer?
     @State private var isPlaying = false
     
@@ -78,21 +79,47 @@ struct PostPreviewView: View {
                     HStack {
                         Spacer()
                         VStack(spacing: 21) {
-                            Image("demo_profile")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 45, height: 45)
-                            SideView(icon: "heart.fill", text: "5.7M")
-                            SideView(icon: "ellipsis.message.fill", text: "59.7K")
-                            SideView(icon: "arrowshape.turn.up.right.fill", text: "101.4K")
+                            AsyncImage(
+                                url: URL(string: post.author.avatarLarger)
+                            ) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                        .frame(width: 45, height: 45)
+
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 45, height: 45)
+                                case .failure:
+                                    Image(systemName: "person.crop.circle.fill")
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 45, height: 45)
+                                        .foregroundColor(.gray)
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                            .frame(width: 45, height: 45)
+                            .clipShape(Circle())
+                            .overlay(
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                            )
+                            SideView(icon: "heart.fill", text: post.stats.diggCount.abbreviated())
+                            SideView(icon: "ellipsis.message.fill", text: post.stats.commentCount.abbreviated())
+                            SideView(icon: "arrowshape.turn.up.right.fill", text: post.stats.shareCount.abbreviated())
                         }
                         .padding([.trailing, .bottom])
                     }
-                    VStack(alignment: .leading) {
-                        Text("@taylorswift")
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("@\(post.author.uniqueId)")
                             .font(.custom(AppFont.Poppins_SemiBold, size: 18.0))
                             .foregroundStyle(.white)
-                        Text("Hi! Well, so, basically I have a birthday coming up and I was thinking a fun way…")
+                        Text(post.desc)
+                            .lineLimit(2)
                             .font(.custom(AppFont.Poppins_Regular, size: 16.0))
                             .foregroundStyle(.white)
                         Button(action: downloadVideoButtonAction) {

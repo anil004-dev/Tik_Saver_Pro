@@ -40,3 +40,33 @@ extension Encodable {
         return json
     }
 }
+
+extension Int {
+    func abbreviated() -> String {
+        let num = Double(self)
+        let thousand = num / 1_000
+        let million = num / 1_000_000
+        let billion = num / 1_000_000_000
+
+        switch num {
+        case 0..<1_000:
+            return "\(self)"
+
+        case 1_000..<1_000_000:
+            return String(format: "%.1fK", thousand).clean
+
+        case 1_000_000..<1_000_000_000:
+            return String(format: "%.1fM", million).clean
+
+        default:
+            return String(format: "%.1fB", billion).clean
+        }
+    }
+}
+
+extension String {
+    var clean: String {
+        self.replacingOccurrences(of: ".0", with: "")
+    }
+}
+

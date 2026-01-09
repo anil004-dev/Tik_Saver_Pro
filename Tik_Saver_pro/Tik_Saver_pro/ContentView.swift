@@ -13,34 +13,46 @@ struct ContentView: View {
     @State private var downloadedVideoURL: DownloadVideoItem?
     @State private var isPresentPreview: Bool = false
     @State private var isLoading: Bool = false
+    @State private var post: TikTokPost?
+    
     func navigationLeftButtonAction() {
         
     }
     
     func pasteButtonAction() {
-        
+        if let pasted = UIPasteboard.general.string {
+            postURL = pasted
+        }
     }
     
     func findVideoButtonAction() {
         guard let url = URL(string: postURL) else { return }
-        Task {
-            do {
-                withAnimation {
-                    isLoading = true
-                }
-                let post = try await TikTokScraper.shared.scrapePost(from: url)
-                print(post.prettyPrintedJSON())
-                let fileURL = try await VideoDownloader.shared.downloadVideo(from: post.video)
-                downloadedVideoURL = DownloadVideoItem(id: UUID(), url: fileURL)
-                print("✅ Video downloaded:", fileURL)
-                isPresentPreview = true
-                withAnimation {
+        let isTiktockURL = url.host?.contains("tiktok") ?? false
+        if isTiktockURL {
+            Task {
+                do {
+                    withAnimation {
+                        isLoading = true
+                    }
+                    let postData = try await TikTokScraper.shared.scrapePost(from: url)
+                    print(postData.prettyPrintedJSON())
+                    let fileURL = try await VideoDownloader.shared.downloadVideo(from: postData.video)
+                    post = postData
+                    downloadedVideoURL = DownloadVideoItem(id: UUID(), url: fileURL)
+                    print("✅ Video downloaded:", fileURL)
+                    isPresentPreview = true
+                    withAnimation {
+                        isLoading = false
+                    }
+                } catch {
                     isLoading = false
+                    print("❌ Error:", error)
+                    //Show error
                 }
-            } catch {
-                isLoading = false
-                print("❌ Error:", error)
             }
+        }
+        else {
+            //Show error
         }
     }
     
@@ -101,10 +113,20 @@ struct ContentView: View {
                                     .foregroundStyle(.white)
                                     .padding(.leading, 10.0)
                                 HStack {
-                                    TextField("URL", text: $postURL)
+                                    TextField("https://www.tiktok.com", text: $postURL)
                                         .font(.custom(AppFont.Poppins_Regular, size: 14.0))
                                         .autocapitalization(.none)
                                         .disableAutocorrection(true)
+                                        .textContentType(.URL)
+                                        .tint(.black)
+                                    if !postURL.isEmpty {
+                                        Button {
+                                            postURL = ""
+                                        } label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(AppColor.Gray)
+                                        }
+                                    }
                                     Button(action: pasteButtonAction) {
                                         Text("Paste")
                                             .font(.custom(AppFont.Poppins_Medium, size: 14.0))
@@ -186,8 +208,8 @@ struct ContentView: View {
             }
         }
         .navigationDestination(isPresented: $isPresentPreview) {
-            if let videoItem = self.downloadedVideoURL {
-                PostPreviewView(downloadedVideoURL: videoItem)
+            if let videoItem = self.downloadedVideoURL, let post = self.post {
+                PostPreviewView(downloadedVideoURL: videoItem, post: post)
             }
         }
     }
