@@ -34,6 +34,7 @@ struct WTScanApp: App {
         UINavigationBar.appearance().compactAppearance = appearance
         
         UIBarButtonItem.appearance().tintColor = .white
+        InterstitialAdManager.shared.loadAd()
     }
     
     var body: some Scene {

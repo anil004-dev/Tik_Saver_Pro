@@ -15,18 +15,41 @@ struct TikSaveRootView: View {
     @State private var isLoading: Bool = false
     @State private var post: TikTokPost?
     
-    func navigationLeftButtonAction() {
+    func navigationMessageButtonAction() {
+        
+    }
+    
+    func navigationMoreButtonAction() {
         
     }
     
     func pasteButtonAction() {
+        AppOpenAdManager.shared.isAdsDisabled = true
         if let pasted = UIPasteboard.general.string {
             postURL = pasted
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                AppOpenAdManager.shared.isAdsDisabled = false
+            }
+            findVideoButtonAction()
+        }
+        else {
+            AppOpenAdManager.shared.isAdsDisabled = false
         }
     }
     
     func findVideoButtonAction() {
-        guard let url = URL(string: postURL) else { return }
+        InterstitialAdManager.shared.didFinishedAd = {
+            InterstitialAdManager.shared.didFinishedAd = nil
+            startFindVideo()
+        }
+        InterstitialAdManager.shared.showAd()
+    }
+    
+    func startFindVideo() {
+        guard let url = URL(string: postURL) else {
+            WTToastManager.shared.show("Please enter valid url.")
+            return
+        }
         let isTiktockURL = url.host?.contains("tiktok") ?? false
         if isTiktockURL {
             Task {
@@ -46,13 +69,12 @@ struct TikSaveRootView: View {
                     }
                 } catch {
                     isLoading = false
-                    print("❌ Error:", error)
-                    //Show error
+                    WTToastManager.shared.show("We couldn’t fetch this video. It may be private, deleted, or the link is invalid. Please check the URL and try again.")
                 }
             }
         }
         else {
-            //Show error
+            WTToastManager.shared.show("Please enter valid tiktok url.")
         }
     }
     
@@ -115,6 +137,7 @@ struct TikSaveRootView: View {
                                 HStack {
                                     TextField("https://www.tiktok.com", text: $postURL)
                                         .font(.custom(AppFont.Poppins_Regular, size: 14.0))
+                                        .foregroundStyle(.black)
                                         .autocapitalization(.none)
                                         .disableAutocorrection(true)
                                         .textContentType(.URL)
@@ -184,6 +207,8 @@ struct TikSaveRootView: View {
                     .ignoresSafeArea()
                     .background(.black.opacity(0.5))
                 }
+                WTToastView()
+                    .zIndex(9999)
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -196,14 +221,14 @@ struct TikSaveRootView: View {
             }
             if #available(iOS 26.0, *) {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    navigationButton(action: navigationLeftButtonAction, icon: "envelope")
-                    navigationButton(action: navigationLeftButtonAction, icon: "ellipsis")
+                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
+                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
                 }
                 .sharedBackgroundVisibility(.hidden)
             } else {
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    navigationButton(action: navigationLeftButtonAction, icon: "envelope")
-                    navigationButton(action: navigationLeftButtonAction, icon: "ellipsis")
+                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
+                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
                 }
             }
         }

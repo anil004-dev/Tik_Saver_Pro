@@ -41,6 +41,8 @@ class AppOpenAdManager: NSObject {
     /// For more interval details, see https://support.google.com/admob/answer/9341964
     let timeoutInterval: TimeInterval = 4 * 3_600
     
+    var isAdsDisabled: Bool = false
+    
     static let shared = AppOpenAdManager()
     // [END app_open_ad_manager]
     
@@ -87,7 +89,7 @@ class AppOpenAdManager: NSObject {
     // [START show_ad]
     func showAdIfAvailable() {
         // If the app open ad is already showing, do not show the ad again.
-        if isShowingAd {
+        if isShowingAd || isAdsDisabled {
             return print("App open ad is already showing.")
         }
         

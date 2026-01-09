@@ -9,17 +9,25 @@ import SwiftUI
 import AVFoundation
 import AVKit
 import PhotosUI
+import StoreKit
 
 struct PostPreviewView: View {
     let downloadedVideoURL: DownloadVideoItem
     let post: TikTokPost
     @State private var player: AVPlayer?
     @State private var isPlaying = false
-    
+    @State private var showPhotoPermissionAlert = false
+
     func saveVideoToPhotos(from fileURL: URL) {
-        PHPhotoLibrary.requestAuthorization { status in
+        AppOpenAdManager.shared.isAdsDisabled = true
+        PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
+            DispatchQueue.main.async {
+                AppOpenAdManager.shared.isAdsDisabled = false
+            }
             guard status == .authorized || status == .limited else {
-                print("❌ Photo permission denied")
+                DispatchQueue.main.async {
+                    self.showPhotoPermissionAlert = true
+                }
                 return
             }
             PHPhotoLibrary.shared().performChanges({
@@ -27,19 +35,42 @@ struct PostPreviewView: View {
             }) { success, error in
                 DispatchQueue.main.async {
                     if success {
-                        print("✅ Video saved to Photos")
+                        WTToastManager.shared.show("Video saved to Photos.")
+                        self.requestAppStoreReview()
                     } else {
-                        print("❌ Failed to save video:", error?.localizedDescription ?? "unknown error")
+                        WTToastManager.shared.show("Couldn’t save the video. Please try again.")
                     }
                 }
             }
         }
     }
     
+    func requestAppStoreReview() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+          guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first(where: { $0.activationState == .foregroundActive }) else {
+            return
+          }
+          AppStore.requestReview(in: windowScene)
+        }
+      }
+    
     func downloadVideoButtonAction() {
-        self.saveVideoToPhotos(from: downloadedVideoURL.url)
+        InterstitialAdManager.shared.didFinishedAd = {
+            InterstitialAdManager.shared.didFinishedAd = nil
+            DispatchQueue.main.async {
+                self.saveVideoToPhotos(from: downloadedVideoURL.url)
+            }
+        }
+        InterstitialAdManager.shared.showAd()
     }
     
+    func openAppSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+
     @ViewBuilder func SideView(icon: String, text: String) -> some View {
         VStack(spacing: 10) {
             Image(systemName: icon)
@@ -64,15 +95,14 @@ struct PostPreviewView: View {
         ScreenContainer {
             ZStack {
                 VStack {
-                    Rectangle()
-                        .fill(AppColor.Gray)
-                        .frame(height: 61)
+                    BannerAdContentView()
+                        .frame(height: 75)
                     Spacer()
                 }
                 if let player {
                     AppVideoPlayer(player: player)
                         .ignoresSafeArea()
-                        .padding(.top, 61)
+                        .padding(.top, 75)
                     Color.clear
                         .contentShape(Rectangle()) // 👈 important
                         .onTapGesture {
@@ -84,7 +114,7 @@ struct PostPreviewView: View {
                                 isPlaying = true
                             }
                         }
-                        .padding(.top, 61)
+                        .padding(.top, 75)
                     if !isPlaying {
                         Image(systemName: "play.circle.fill")
                             .resizable()
@@ -174,6 +204,8 @@ struct PostPreviewView: View {
                     
                 }
                 //.padding()
+                WTToastView()
+                    .zIndex(9999)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -198,6 +230,14 @@ struct PostPreviewView: View {
             }
             .onDisappear {
                 NotificationCenter.default.removeObserver(self)
+            }
+            .alert("Photos Access Required", isPresented: $showPhotoPermissionAlert) {
+                Button("Settings") {
+                    openAppSettings()
+                }
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please allow Photos access to save videos to your library.")
             }
         }
     }

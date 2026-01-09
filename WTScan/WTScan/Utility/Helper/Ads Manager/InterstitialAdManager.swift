@@ -20,13 +20,8 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate, ObservableObje
     private let adUnitID = AdUnitID.Interstitial
     
     func loadAd() {
-        WTLoader.show()
-        
         let request = Request()
         InterstitialAd.load(with: adUnitID, request: request) { [weak self] ad, error in
-            WTLoader.dismiss()
-            
-            
             if let error = error {
                 print("❌ Failed to load interstitial ad: \(error.localizedDescription)")
                 DispatchQueue.main.async { [weak self] in
@@ -37,16 +32,13 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate, ObservableObje
                 DispatchQueue.main.asyncAfter(deadline: .now()+0.5) {
                     self?.interstitial = ad
                     self?.interstitial?.fullScreenContentDelegate = self
-                    self?.showAd()
                 }
             }
         }
     }
     
     func showAd() {
-        
         tapCount = 0
-        
         if let ad = interstitial {
             ad.present(from: nil)
         } else {
@@ -55,9 +47,7 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate, ObservableObje
     }
     
     func increaseTapCount() {
-       
         tapCount += 1
-        
         if tapCount > (AppState.shared.isLive ? 4 : 14) {
             showAd()
         } else {
@@ -76,6 +66,7 @@ class InterstitialAdManager: NSObject, FullScreenContentDelegate, ObservableObje
         DispatchQueue.main.async { [weak self] in
             self?.didFinishedAd?()
             self?.didFinishedAd = nil
+            self?.loadAd()
         }
     }
 }
