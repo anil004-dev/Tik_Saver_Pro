@@ -135,7 +135,7 @@ struct TikSaveRootView: View {
                                     .foregroundStyle(.white)
                                     .padding(.leading, 10.0)
                                 HStack {
-                                    TextField("https://www.tiktok.com", text: $postURL)
+                                    TextField("", text: $postURL, prompt: Text("Enter or Paste URL.").foregroundStyle(.gray))
                                         .font(.custom(AppFont.Poppins_Regular, size: 14.0))
                                         .foregroundStyle(.black)
                                         .autocapitalization(.none)
@@ -188,6 +188,8 @@ struct TikSaveRootView: View {
                     }
                 }
                 .padding()
+                .scrollIndicators(.hidden)
+
                 if isLoading {
                     VStack {
                         Spacer()
@@ -210,6 +212,7 @@ struct TikSaveRootView: View {
                 WTToastView()
                     .zIndex(9999)
             }
+            .hideKeyboardOnTap()
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
