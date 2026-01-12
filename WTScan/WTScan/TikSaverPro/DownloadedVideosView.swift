@@ -9,107 +9,83 @@ import SwiftUI
 
 struct DownloadedVideosView: View {
 
+    enum Mode {
+        case all
+        case collection(VideoCollection)
+    }
+
+    let mode: Mode
+
     @State private var videos: [DownloadedVideo] = []
     @State private var selectedVideo: DownloadedVideo?
-    @State private var showPlayer = false
     @State private var showDeleteAlert = false
     @State private var videoToDelete: DownloadedVideo?
     @State private var videoToAdd: DownloadedVideo?
-    @State private var showAddView = false
-    
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
 
-    var emptyStateView: some View {
+    private let spacing: CGFloat = 15
+
+    private var columns: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: spacing),
+            GridItem(.flexible(), spacing: spacing)
+        ]
+    }
+
+    // MARK: - Empty State
+    private var emptyStateView: some View {
         VStack(spacing: 12) {
             Image(systemName: "tray")
-                .font(.system(size: 44, weight: .light))
+                .font(.system(size: 44))
                 .foregroundColor(.white)
-            
-            Text("No Downloaded Videos")
-                .font(.custom(AppFont.Poppins_SemiBold, size: 18.0))
+
+            Text("No Videos")
+                .font(.custom(AppFont.Poppins_SemiBold, size: 18))
                 .foregroundColor(.white)
-            
-            Text("You don’t have any downloaded videos yet.\nStart browsing videos and download them to see them here.")
-                .font(.custom(AppFont.Poppins_Regular, size: 14.0))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
+
+            Text("No videos found in this collection.")
+                .font(.custom(AppFont.Poppins_Regular, size: 14))
+                .foregroundColor(.white.opacity(0.8))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
-    
+
+    // MARK: - Load
+    private func loadVideos() {
+        switch mode {
+        case .all:
+            videos = DownloadStore.shared.load()
+
+        case .collection(let collection):
+            videos = CollectionStore.shared.loadVideos(in: collection)
+        }
+    }
+
+    // MARK: - Delete
     private func deleteVideo(_ video: DownloadedVideo) {
-        DownloadStore.shared.delete(video)
+        switch mode {
+        case .all:
+            DownloadStore.shared.delete(video)
+
+        case .collection(let collection):
+            CollectionStore.shared.removeVideo(video, from: collection)
+        }
+
         videos.removeAll { $0.id == video.id }
     }
 
-    private func moveToCollection(_ video: DownloadedVideo) {
-        videoToAdd = video
-        showAddView = true
-    }
-
-    
+    // MARK: - Body
     var body: some View {
         ScreenContainer {
             if videos.isEmpty {
                 emptyStateView
             } else {
                 GeometryReader { geo in
+                    let cellWidth = (geo.size.width - spacing * 3) / 2
+
                     ScrollView {
-                        let spacing: CGFloat = 15.0
-                        let totalSpacing: CGFloat = spacing * CGFloat(columns.count - 1)
-                        let leftAndRightSpacing: CGFloat = spacing * 2.0
-                        let cellWidth = (geo.size.width - totalSpacing - leftAndRightSpacing) / CGFloat(columns.count)
                         LazyVGrid(columns: columns, spacing: spacing) {
                             ForEach(videos) { video in
-                                ZStack {
-                                    Image(uiImage: UIImage(contentsOfFile: video.thumbnailURL.path)!)
-                                        .resizable()
-                                        .scaledToFill()
-                                        .frame(
-                                            width: cellWidth,
-                                            height: cellWidth * 1.4   // vertical video ratio
-                                        )
-                                        .background(AppColor.Gray)
-                                        .clipped()
-                                        .cornerRadius(spacing)
-                                    
-                                    Image(systemName: "play.circle.fill")
-                                        .font(.system(size: 36))
-                                        .foregroundColor(.white)
-                                        .shadow(radius: 4)
-                                }
-                                .overlay(alignment: .bottomTrailing) {
-                                    // ⋯ Menu (BOTTOM RIGHT ONLY)
-                                    Menu {
-                                        Button {
-                                            moveToCollection(video)
-                                        } label: {
-                                            Label("Add to Collection", systemImage: "folder")
-                                        }
-
-                                        Button(role: .destructive) {
-                                            videoToDelete = video
-                                            showDeleteAlert = true
-                                        } label: {
-                                            Label("Delete", systemImage: "trash")
-                                        }
-                                    } label: {
-                                        Image(systemName: "chevron.forward.circle.fill")
-                                            .resizable()
-                                            .frame(width: 25.0, height: 25.0)
-                                            .foregroundColor(.white)
-                                            .padding(10)
-                                    }
-                                }
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    selectedVideo = video
-                                }
-                                
+                                videoCell(video, width: cellWidth)
                             }
                         }
                         .padding(spacing)
@@ -117,13 +93,11 @@ struct DownloadedVideosView: View {
                 }
             }
         }
-        .onAppear {
-            videos = DownloadStore.shared.load()
-        }
+        .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Saved Videos")
-        .fullScreenCover(item: $selectedVideo) { video in
-            VideoPlayerFullScreenView(videoURL: video.videoURL)
+        .onAppear(perform: loadVideos)
+        .fullScreenCover(item: $selectedVideo) {
+            VideoPlayerFullScreenView(videoURL: $0.videoURL)
         }
         .sheet(item: $videoToAdd) { video in
             NavigationStack {
@@ -134,17 +108,99 @@ struct DownloadedVideosView: View {
             Button("Delete", role: .destructive) {
                 if let video = videoToDelete {
                     deleteVideo(video)
-                    videoToDelete = nil
                 }
             }
-
-            Button("Cancel", role: .cancel) {
-                videoToDelete = nil
-            }
-        } message: {
-            Text("This video will be permanently removed from your device.")
+            Button("Cancel", role: .cancel) {}
         }
+    }
 
+    // MARK: - Title
+    private var title: String {
+        switch mode {
+        case .all:
+            return "Saved Videos"
+        case .collection(let collection):
+            return collection.name
+        }
+    }
+
+    // MARK: - Cell
+    @ViewBuilder
+    private func videoCell(_ video: DownloadedVideo, width: CGFloat) -> some View {
+        ZStack {
+            Image(uiImage: UIImage(contentsOfFile: video.thumbnailURL.path)!)
+                .resizable()
+                .scaledToFill()
+                .frame(width: width, height: width * 1.4)
+                .clipped()
+                .cornerRadius(14)
+
+            Image(systemName: "play.circle.fill")
+                .font(.system(size: 36))
+                .foregroundColor(.white)
+        }
+        .overlay(alignment: .topTrailing) {
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    switch mode {
+                    case .collection:
+                        deleteButton(video)
+                    case .all:
+                        menuButton(video)
+                    }
+                }
+            }
+        }
+        .onTapGesture {
+            selectedVideo = video
+        }
+    }
+
+    // MARK: - Menu (All Videos)
+    private func menuButton(_ video: DownloadedVideo) -> some View {
+        Menu {
+            Button {
+                videoToAdd = video
+            } label: {
+                Label("Add to Collection", systemImage: "folder")
+            }
+
+            Button(role: .destructive) {
+                videoToDelete = video
+                showDeleteAlert = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle.fill")
+                .font(.system(size: 22))
+                .foregroundColor(.white)
+                .padding(10)
+        }
+    }
+
+    // MARK: - Delete (Collection Mode)
+    private func deleteButton(_ video: DownloadedVideo) -> some View {
+        Button {
+            videoToDelete = video
+            showDeleteAlert = true
+        } label: {
+            Image(systemName: "trash.circle.fill")
+                .font(.system(size: 24))
+                .foregroundColor(.white)
+                .padding(10)
+        }
     }
 }
 
+// MARK: - Helpers
+private extension DownloadedVideosView.Mode {
+    var collectionValue: VideoCollection? {
+        if case .collection(let collection) = self {
+            return collection
+        }
+        return nil
+    }
+}

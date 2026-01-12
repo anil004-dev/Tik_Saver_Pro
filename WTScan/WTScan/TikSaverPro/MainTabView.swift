@@ -21,7 +21,7 @@ struct MainTabView: View {
                     Text("TikSave")
                 }
             // 2️⃣ Downloads
-            NavigationStack { DownloadedVideosView() }
+            NavigationStack { DownloadedVideosView(mode: .all) }
                 .tabItem {
                     Image(systemName: "tray.full.fill")
                     Text("Downloads")

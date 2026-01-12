@@ -15,6 +15,8 @@ struct MyVideoCollectionView: View {
     @State private var collectionToDelete: VideoCollection?
     let videoToAdd: DownloadedVideo?
     @State private var selectedCollection: VideoCollection?
+    @State private var previewCollection: VideoCollection?
+    @State private var showPreviewCollection = false
     @Environment(\.dismiss) private var dismiss
     
 //    private let columns = [
@@ -65,10 +67,16 @@ struct MyVideoCollectionView: View {
             videoToAdd: videoToAdd,
             isSelected: selectedCollection?.id == collection.id,
             onTap: {
-                if selectedCollection?.id == collection.id {
-                    selectedCollection = nil   // deselect
-                } else {
-                    selectedCollection = collection
+                if videoToAdd != nil {
+                    if selectedCollection?.id == collection.id {
+                        selectedCollection = nil   // deselect
+                    } else {
+                        selectedCollection = collection
+                    }
+                }
+                else {
+                    previewCollection = collection
+                    showPreviewCollection = true
                 }
             },
             onDelete: {
@@ -168,6 +176,11 @@ struct MyVideoCollectionView: View {
         }
         .safeAreaInset(edge: .bottom) {
             addToCollectionButton
+        }
+        .navigationDestination(isPresented: $showPreviewCollection) {
+            if let collection = self.previewCollection {
+                DownloadedVideosView(mode: .collection(collection))
+            }
         }
     }
 }
@@ -296,9 +309,7 @@ struct CollectionCellView: View {
         }
         .frame(width: size, height: size + 50)
         .onTapGesture {
-            if videoToAdd != nil {
-                onTap()
-            }
+            onTap()
         }
     }
 

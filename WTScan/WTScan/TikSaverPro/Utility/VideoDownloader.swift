@@ -200,12 +200,12 @@ struct VideoCollection: Identifiable, Codable {
     let createdAt: Date
 }
 
-struct CollectionVideoRef: Identifiable, Codable {
-    let id: UUID
-    let videoFileName: String
-    let thumbnailFileName: String
-    let addedAt: Date
-}
+//struct CollectionVideoRef: Identifiable, Codable {
+//    let id: UUID
+//    let videoFileName: String
+//    let thumbnailFileName: String
+//    let addedAt: Date
+//}
 
 
 final class DownloadStore {
@@ -296,14 +296,14 @@ final class CollectionStore {
     }
     // MARK: - Videos
 
-    func loadVideos(in collection: VideoCollection) -> [CollectionVideoRef] {
+    func loadVideos(in collection: VideoCollection) -> [DownloadedVideo] {
         let fileURL = CollectionDirectory
             .url(for: collection.name)
             .appendingPathComponent("videos.json")
 
         guard
             let data = try? Data(contentsOf: fileURL),
-            let items = try? JSONDecoder().decode([CollectionVideoRef].self, from: data)
+            let items = try? JSONDecoder().decode([DownloadedVideo].self, from: data)
         else { return [] }
 
         return items
@@ -321,11 +321,11 @@ final class CollectionStore {
         }
 
         items.append(
-            CollectionVideoRef(
+            DownloadedVideo(
                 id: UUID(),
                 videoFileName: video.videoFileName,
                 thumbnailFileName: video.thumbnailFileName,
-                addedAt: Date()
+                createdAt: Date()
             )
         )
 
@@ -334,7 +334,7 @@ final class CollectionStore {
     }
 
     func removeVideo(
-        _ video: CollectionVideoRef,
+        _ video: DownloadedVideo,
         from collection: VideoCollection
     ) {
         let fileURL = CollectionDirectory
