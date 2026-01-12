@@ -230,6 +230,10 @@ struct PostPreviewView: View {
             }
             .onDisappear {
                 NotificationCenter.default.removeObserver(self)
+                if player != nil {
+                    player!.pause()
+                }
+                
             }
             .alert("Photos Access Required", isPresented: $showPhotoPermissionAlert) {
                 Button("Settings") {

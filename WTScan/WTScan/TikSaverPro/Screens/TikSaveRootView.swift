@@ -64,6 +64,7 @@ struct TikSaveRootView: View {
                     downloadedVideoURL = videoData
                     print("✅ Video downloaded:", videoData.videoURL)
                     isPresentPreview = true
+                    postURL = ""
                     withAnimation {
                         isLoading = false
                     }

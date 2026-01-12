@@ -111,7 +111,7 @@ struct MyVideoCollectionView: View {
 
     @ViewBuilder
     private var addToCollectionButton: some View {
-        if let video = videoToAdd {
+        if let video = videoToAdd, collections.count > 0 {
             Button {
                 if let collection = selectedCollection {
                     do {
