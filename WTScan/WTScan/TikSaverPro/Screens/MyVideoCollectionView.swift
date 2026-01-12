@@ -35,8 +35,8 @@ struct MyVideoCollectionView: View {
     private var collectionGridView: some View {
         GeometryReader { geo in
             ScrollView {
-                let columnCount: Int = 3
-                let spacing: CGFloat = 14
+                let columnCount: Int = 2
+                let spacing: CGFloat = 20
                 let totalSpacing = spacing * CGFloat(columnCount - 1)
                 let leftAndRightSpacing: CGFloat = spacing + spacing
                 let cellWidth = (geo.size.width - leftAndRightSpacing - totalSpacing) / CGFloat(columnCount)
@@ -88,13 +88,11 @@ struct MyVideoCollectionView: View {
     
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        if !collections.isEmpty {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showAddCollection = true
-                } label: {
-                    Image(systemName: "plus")
-                }
+        ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                showAddCollection = true
+            } label: {
+                Image(systemName: "plus")
             }
         }
 
@@ -123,19 +121,23 @@ struct MyVideoCollectionView: View {
                     dismiss()
                 }
             } label: {
-                Text("Add to Collection")
-                    .font(.custom(AppFont.Poppins_SemiBold, size: 16))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
+                HStack {
+                    Spacer()
+                    Text("Add to Collection")
+                        .font(.custom(AppFont.Poppins_SemiBold, size: 16))
+                        .padding(.vertical, 15)
+                    Spacer()
+                }
             }
-            .buttonStyle(.borderedProminent)
-            .padding()
-            .tint(
+            .buttonStyle(.plain)
+            .background(
                 selectedCollection == nil
                 ? Color.gray
                 : AppColor.Pink
             )
             .disabled(selectedCollection == nil)
+            .cornerRadius(14.0)
+            .padding(.horizontal, 20)
         }
     }
 
@@ -158,9 +160,11 @@ struct MyVideoCollectionView: View {
             collections = CollectionStore.shared.load()
         }
         .sheet(isPresented: $showAddCollection) {
-            AddCollectionView { _ in
-                //try? CollectionStore.shared.create(name: name)
-                collections = CollectionStore.shared.load()
+            NavigationStack {
+                AddCollectionView { _ in
+                    //try? CollectionStore.shared.create(name: name)
+                    collections = CollectionStore.shared.load()
+                }
             }
         }
         .alert("Delete Collection?", isPresented: $showDeleteAlert) {
@@ -189,46 +193,29 @@ private extension MyVideoCollectionView {
 
     var emptyStateView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "folder")
-                .font(.system(size: 48))
-                .foregroundColor(.white)
-
-            Text("No Collections Yet")
-                .font(.custom(AppFont.Poppins_SemiBold, size: 18))
-                .foregroundColor(.white)
-
-            Text("Create collections to organize your videos.")
-                .font(.custom(AppFont.Poppins_Regular, size: 14))
-                .foregroundColor(.white.opacity(0.8))
-
-            Button {
-                showAddCollection = true
-            } label: {
-                Text("Add Collection")
-                    .font(.custom(AppFont.Poppins_Medium, size: 15))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 10)
+            Image("ic_collection")
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(AppColor.Pink)
+                .padding(12)
+                .frame(width: 50, height: 50)
+                .background(.white.opacity(0.13))
+                .clipShape(Circle())
+            
+            VStack(spacing: 0) {
+                Text("No Collections")
+                    .font(.custom(AppFont.Poppins_SemiBold, size: 18))
+                    .foregroundColor(.white)
+                
+                Text("Start by adding a collection.")
+                    .font(.custom(AppFont.Poppins_Medium, size: 18))
+                    .foregroundColor(Color(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0))
+                    .multilineTextAlignment(.leading)
             }
-            .buttonStyle(.borderedProminent)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
-
-enum CardGradients {
-    static let all: [LinearGradient] = [
-        LinearGradient(colors: [Color.blue.opacity(0.9), Color.cyan], startPoint: .topLeading, endPoint: .bottomTrailing),
-        LinearGradient(colors: [Color.purple.opacity(0.9), Color.pink], startPoint: .topLeading, endPoint: .bottomTrailing),
-        LinearGradient(colors: [Color.orange.opacity(0.9), Color.red], startPoint: .topLeading, endPoint: .bottomTrailing),
-        LinearGradient(colors: [Color.green.opacity(0.9), Color.teal], startPoint: .topLeading, endPoint: .bottomTrailing)
-    ]
-
-    static func gradient(for id: UUID) -> LinearGradient {
-        let index = abs(id.hashValue) % all.count
-        return all[index]
-    }
-}
-
 
 struct CollectionCellView: View {
 
@@ -239,10 +226,6 @@ struct CollectionCellView: View {
     let onTap: () -> Void
     let onDelete: () -> Void
 
-    private var gradient: LinearGradient {
-        CardGradients.gradient(for: collection.id)
-    }
-    
     private var coverThumbnailURL: URL? {
         let videos = CollectionStore.shared.loadVideos(in: collection)
         guard let first = videos.first else { return nil }
@@ -252,7 +235,7 @@ struct CollectionCellView: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 18)
-                .fill(gradient)
+                .fill(Color(hex: "#CCCCCC"))
                 .overlay(
                     RoundedRectangle(cornerRadius: 18)
                         .stroke(
@@ -273,9 +256,9 @@ struct CollectionCellView: View {
                             .frame(width: size, height: size)
                             .clipped()
                     } else {
-                        Image(systemName: "folder.fill")
-                            .font(.system(size: 38))
-                            .foregroundColor(.white)
+                        Image(systemName: "folder.circle.fill")
+                            .font(.system(size: 45))
+                            .foregroundColor(.black)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -286,8 +269,8 @@ struct CollectionCellView: View {
                     .foregroundColor(.white)
                     .lineLimit(2)
                     .padding(5)
-                    .frame(width: size, height: 50)
-                    .background(Color.black.opacity(0.85))
+                    .frame(width: size, height: 56)
+                    .background(Color(red: 18.0/255.0, green: 21.0/255.0, blue: 27.0/255.0))
             }
             .clipShape(RoundedRectangle(cornerRadius: 18))
             // ❌ Delete (only normal mode)
@@ -296,18 +279,23 @@ struct CollectionCellView: View {
                     HStack {
                         Spacer()
                         Button(action: onDelete) {
-                            Image(systemName: "trash.circle.fill")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .padding(10)
+                            Image(systemName: "trash.fill")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.black)
+                                .frame(width: 35, height: 35)
+                                .background(Color.white)
                                 .clipShape(Circle())
+                                .shadow(color: .black.opacity(0.25), radius: 6, x: 0, y: 3)
+                                .padding(.trailing, 12)
+                                .padding(.top, 12)
                         }
+                        
                     }
                     Spacer()
                 }
             }
         }
-        .frame(width: size, height: size + 50)
+        .frame(width: size, height: size + 56)
         .onTapGesture {
             onTap()
         }

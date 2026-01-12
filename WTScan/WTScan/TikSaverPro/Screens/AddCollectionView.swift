@@ -17,55 +17,62 @@ struct AddCollectionView: View {
     let onCreate: (String) -> Void
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Collection Name")
-                        .font(.custom(AppFont.Poppins_Medium, size: 14))
-                        .foregroundColor(.white.opacity(0.9))
+        ScreenContainer {
+            VStack(spacing: 0) {
+                VStack(spacing: 20) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Collection Name")
+                            .font(.custom(AppFont.Poppins_SemiBold, size: 16))
+                            .foregroundColor(.white)
+                        TextField("", text: $name, prompt: Text("e.g. Travel, Picnic, Business").foregroundStyle(.gray))
+                            .font(.custom(AppFont.Poppins_Regular, size: 14))
+                            .padding(12)
+                            .background(.white)
+                            .cornerRadius(14)
+                            .foregroundColor(.black)
+                            .autocapitalization(.words)
+                    }
 
-                    TextField("e.g. Travel, Picnic, Business", text: $name)
-                        .font(.custom(AppFont.Poppins_Regular, size: 15))
-                        .padding(12)
-                        .background(AppColor.Gray)
-                        .cornerRadius(10)
-                        .foregroundColor(.black)
-                        .autocapitalization(.words)
+                    if let errorMessage {
+                        Text(errorMessage)
+                            .font(.custom(AppFont.Poppins_Regular, size: 13))
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.leading)
+                    }
+
+                    Button {
+                        createCollection()
+                    } label: {
+                        Text("Create Collection")
+                            .font(.custom(AppFont.Poppins_SemiBold, size: 16))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                    }
+                    .buttonStyle(.plain)
+                    .background(
+                        name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        ? Color.gray
+                        : AppColor.Pink
+                    )
+                    .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .cornerRadius(14.0)
                 }
-
-                if let errorMessage {
-                    Text(errorMessage)
-                        .font(.custom(AppFont.Poppins_Regular, size: 13))
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.leading)
-                }
-
-                Button {
-                    createCollection()
-                } label: {
-                    Text("Create Collection")
-                        .font(.custom(AppFont.Poppins_SemiBold, size: 15))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(
-                    name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-                    ? Color.gray
-                    : AppColor.Pink
-                )
-                .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-
+                .padding()
+                .background(AppColor.Gray.opacity(0.12))
+                .cornerRadius(20.0)
                 Spacer()
             }
             .padding()
-            .navigationTitle("New Collection")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
+            
+        }
+        .navigationTitle("New Collection")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
                 }
             }
         }

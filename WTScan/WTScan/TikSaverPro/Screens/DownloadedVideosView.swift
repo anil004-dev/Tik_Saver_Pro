@@ -33,19 +33,37 @@ struct DownloadedVideosView: View {
 
     // MARK: - Empty State
     private var emptyStateView: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 16) {
             Image(systemName: "tray")
-                .font(.system(size: 44))
-                .foregroundColor(.white)
-
-            Text("No Videos")
-                .font(.custom(AppFont.Poppins_SemiBold, size: 18))
-                .foregroundColor(.white)
-
-            Text("No videos found in this collection.")
-                .font(.custom(AppFont.Poppins_Regular, size: 14))
-                .foregroundColor(.white.opacity(0.8))
+                .resizable()
+                .scaledToFit()
+                .foregroundColor(AppColor.Pink)
+                .padding(12.0)
+                .frame(width: 50, height: 50)
+                .background(.white.opacity(0.13))
+                .clipShape(Circle())
+            VStack(spacing: 0) {
+                Text("No Videos")
+                    .font(.custom(AppFont.Poppins_SemiBold, size: 18))
+                    .foregroundColor(.white)
+                switch mode {
+                case .all:
+                    Text("You didn't saved any videos yet.")
+                        .lineLimit(2)
+                        .font(.custom(AppFont.Poppins_Medium, size: 18))
+                        .foregroundColor(Color(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0))
+                        .multilineTextAlignment(.leading)
+                case .collection(let collection):
+                    Text("Videos not found in \(collection.name) collection.")
+                        .lineLimit(2)
+                        .font(.custom(AppFont.Poppins_Medium, size: 18))
+                        .foregroundColor(Color(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0))
+                        .multilineTextAlignment(.leading)
+                }
+                
+            }
         }
+        .padding(20.0)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
@@ -133,11 +151,13 @@ struct DownloadedVideosView: View {
                 .scaledToFill()
                 .frame(width: width, height: width * 1.4)
                 .clipped()
-                .cornerRadius(14)
+                .cornerRadius(20.0)
 
             Image(systemName: "play.circle.fill")
-                .font(.system(size: 36))
+                .resizable()
+                .frame(width: 55, height: 55)
                 .foregroundColor(.white)
+                .shadow(color: .black.opacity(0.5), radius: 6, x: 0, y: 3)
         }
         .overlay(alignment: .topTrailing) {
             VStack {

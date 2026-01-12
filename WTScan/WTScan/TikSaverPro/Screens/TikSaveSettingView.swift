@@ -20,10 +20,10 @@ struct TikSaveSettingView: View {
     @State private var webItem: WebItem?
     // MARK: - Constants
     
-    private let appStoreReviewURL = URL(string: "https://apps.apple.com/app/id6757417781?action=write-review")!
-    private let appStoreURL = URL(string: "https://apps.apple.com/app/id6757417781")!
-    private let termsURL = URL(string: "https://clearneststorageorganizer.blogspot.com/2026/01/clearnest-terms-of-use.html")!
-    private let privacyURL = URL(string: "https://clearneststorageorganizer.blogspot.com/2026/01/clearnest-privacy-policy.html")!
+    private let appStoreReviewURL = URL(string: WTConstant.appReviewURL)!
+    private let appStoreURL = URL(string: WTConstant.appURL)!
+    private let termsURL = URL(string: WTConstant.termsConditionURL)!
+    private let privacyURL = URL(string: WTConstant.privacyPolicyURL)!
     
     // MARK: - UI Components
     
@@ -58,9 +58,9 @@ struct TikSaveSettingView: View {
     
     func openMailForFeedback() {
         let email = "narendrasorathiya004@gmail.com"
-        let subject = "WT Scan Contact Us"
+        let subject = "\(Utility.getAppName()) Contact Us"
         let body = "Hello, I need help with..."
-        
+    
         let emailString = "mailto:\(email)?subject=\(subject)&body=\(body)"
         if let emailURL = emailString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
            let url = URL(string: emailURL),UIApplication.shared.canOpenURL(url) {
