@@ -34,6 +34,28 @@ struct WTScanApp: App {
         UINavigationBar.appearance().compactAppearance = appearance
         
         UIBarButtonItem.appearance().tintColor = .white
+        
+//        let tabAppearance = UITabBarAppearance()
+//        tabAppearance.configureWithOpaqueBackground()
+//        
+//        // Background
+//        tabAppearance.backgroundColor = UIColor.black
+//        
+//        // Unselected
+//        tabAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.white
+//        tabAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+//            .foregroundColor: UIColor.white
+//        ]
+//        
+//        // Selected
+//        tabAppearance.stackedLayoutAppearance.selected.iconColor = UIColor.yellow
+//        tabAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+//            .foregroundColor: UIColor.yellow
+//        ]
+//        
+//        UITabBar.appearance().standardAppearance = tabAppearance
+//        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+        
         InterstitialAdManager.shared.loadAd()
     }
     
@@ -127,9 +149,7 @@ struct WTScanApp: App {
             SplashView(viewModel: splashViewModel)*/
         case .home:
             if appState.isLive {
-                NavigationStack {
-                    TikSaveRootView()
-                }
+                MainTabView()
             }
             else {
                 NavigationStack(path: $navigationManager.path) {

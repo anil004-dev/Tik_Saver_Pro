@@ -12,7 +12,7 @@ import PhotosUI
 import StoreKit
 
 struct PostPreviewView: View {
-    let downloadedVideoURL: DownloadVideoItem
+    let downloadedVideoURL: DownloadedVideo
     let post: TikTokPost
     @State private var player: AVPlayer?
     @State private var isPlaying = false
@@ -60,7 +60,7 @@ struct PostPreviewView: View {
         InterstitialAdManager.shared.didFinishedAd = {
             InterstitialAdManager.shared.didFinishedAd = nil
             DispatchQueue.main.async {
-                self.saveVideoToPhotos(from: downloadedVideoURL.url)
+                self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
             }
         }
         InterstitialAdManager.shared.showAd()
@@ -100,7 +100,7 @@ struct PostPreviewView: View {
                     Spacer()
                 }
                 if let player {
-                    AppVideoPlayer(player: player)
+                    AppVideoPlayer(player: player, showControls: false)
                         .ignoresSafeArea()
                         .padding(.top, 75)
                     Color.clear
@@ -215,7 +215,7 @@ struct PostPreviewView: View {
                 }
             }
             .task {
-                player = AVPlayer(url: downloadedVideoURL.url)
+                player = AVPlayer(url: downloadedVideoURL.videoURL)
                 player?.play()
                 isPlaying = true
                 NotificationCenter.default.addObserver(

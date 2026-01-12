@@ -41,8 +41,3 @@ struct Stats: Codable {
     let commentCount: Int
     let playCount: Int
 }
-
-struct DownloadVideoItem: Hashable {
-    let id: UUID
-    let url: URL
-}

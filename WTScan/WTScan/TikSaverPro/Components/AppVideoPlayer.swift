@@ -10,12 +10,13 @@ import AVKit
 
 struct AppVideoPlayer: UIViewControllerRepresentable {
     let player: AVPlayer
-
+    let showControls: Bool
+    
     func makeUIViewController(context: Context) -> AVPlayerViewController {
         let controller = AVPlayerViewController()
         controller.player = player
         controller.videoGravity = .resizeAspectFill
-        controller.showsPlaybackControls = false
+        controller.showsPlaybackControls = showControls
         controller.view.backgroundColor = .clear
         return controller
     }

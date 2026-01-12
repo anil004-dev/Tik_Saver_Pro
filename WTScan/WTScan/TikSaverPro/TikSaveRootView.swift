@@ -10,7 +10,7 @@ import SwiftUI
 struct TikSaveRootView: View {
     
     @State private var postURL: String = ""
-    @State private var downloadedVideoURL: DownloadVideoItem?
+    @State private var downloadedVideoURL: DownloadedVideo?
     @State private var isPresentPreview: Bool = false
     @State private var isLoading: Bool = false
     @State private var post: TikTokPost?
@@ -59,10 +59,10 @@ struct TikSaveRootView: View {
                     }
                     let postData = try await TikTokScraper.shared.scrapePost(from: url)
                     print(postData.prettyPrintedJSON())
-                    let fileURL = try await VideoDownloader.shared.downloadVideo(from: postData.video)
+                    let videoData = try await VideoDownloader.shared.downloadVideo(from: postData.video)
                     post = postData
-                    downloadedVideoURL = DownloadVideoItem(id: UUID(), url: fileURL)
-                    print("✅ Video downloaded:", fileURL)
+                    downloadedVideoURL = videoData
+                    print("✅ Video downloaded:", videoData.videoURL)
                     isPresentPreview = true
                     withAnimation {
                         isLoading = false
@@ -238,6 +238,7 @@ struct TikSaveRootView: View {
         .navigationDestination(isPresented: $isPresentPreview) {
             if let videoItem = self.downloadedVideoURL, let post = self.post {
                 PostPreviewView(downloadedVideoURL: videoItem, post: post)
+                    .toolbar(.hidden, for: .tabBar)
             }
         }
     }
