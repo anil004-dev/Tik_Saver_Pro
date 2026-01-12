@@ -223,18 +223,18 @@ struct TikSaveRootView: View {
                     .scaledToFit()
                     .frame(width: 97, height: 39, alignment: .center)
             }
-            if #available(iOS 26.0, *) {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
-                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
-                }
-                .sharedBackgroundVisibility(.hidden)
-            } else {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
-                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
-                }
-            }
+//            if #available(iOS 26.0, *) {
+//                ToolbarItemGroup(placement: .topBarTrailing) {
+//                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
+//                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
+//                }
+//                .sharedBackgroundVisibility(.hidden)
+//            } else {
+//                ToolbarItemGroup(placement: .topBarTrailing) {
+//                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
+//                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
+//                }
+//            }
         }
         .navigationDestination(isPresented: $isPresentPreview) {
             if let videoItem = self.downloadedVideoURL, let post = self.post {

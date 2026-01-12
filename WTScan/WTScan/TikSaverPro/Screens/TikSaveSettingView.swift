@@ -62,9 +62,10 @@ struct TikSaveSettingView: View {
         let body = "Hello, I need help with..."
     
         let emailString = "mailto:\(email)?subject=\(subject)&body=\(body)"
-        if let emailURL = emailString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-           let url = URL(string: emailURL),UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
+        if let emailURL = emailString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+            if let url = URL(string: emailURL), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+            }
         }
     }
     
@@ -91,7 +92,7 @@ struct TikSaveSettingView: View {
                         Cell(title: "Share App", icon: "square.and.arrow.up")
                     }
                 }
-                .listRowBackground(Color(UIColor.secondarySystemBackground))
+                .listRowBackground(Color.black)
                 
                 // MARK: Privacy Section
                 Section(header: Header(title: "Privacy settings")) {
@@ -106,7 +107,7 @@ struct TikSaveSettingView: View {
                         Cell(title: "Privacy Policy", icon: "lock.shield.fill")
                     }
                 }
-                .listRowBackground(Color(UIColor.secondarySystemBackground))
+                .listRowBackground(Color.black)
             }
             .scrollContentBackground(.hidden)
             .background(Color.clear)

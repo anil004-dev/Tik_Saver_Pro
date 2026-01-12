@@ -270,7 +270,7 @@ struct CollectionCellView: View {
                     .lineLimit(2)
                     .padding(5)
                     .frame(width: size, height: 56)
-                    .background(Color(red: 18.0/255.0, green: 21.0/255.0, blue: 27.0/255.0))
+                    .background(Color.black)
             }
             .clipShape(RoundedRectangle(cornerRadius: 18))
             // ❌ Delete (only normal mode)

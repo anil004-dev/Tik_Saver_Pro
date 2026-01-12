@@ -17,26 +17,22 @@ struct MainTabView: View {
             // 1️⃣ TikSave
             NavigationStack { TikSaveRootView() }
                 .tabItem {
-                    Image(systemName: "arrow.down.circle.fill")
-                    Text("TikSave")
+                    Image("ic_home")
                 }
             // 2️⃣ Downloads
             NavigationStack { DownloadedVideosView(mode: .all) }
                 .tabItem {
-                    Image(systemName: "tray.full.fill")
-                    Text("Downloads")
+                    Image("ic_download")
                 }
             // 3️⃣ Collection
             NavigationStack { MyVideoCollectionView(videoToAdd: nil) }
                 .tabItem {
-                    Image(systemName: "square.grid.2x2.fill")
-                    Text("Collection")
+                    Image("ic_collection_tab")
                 }
             // 4️⃣ Settings
             NavigationStack { TikSaveSettingView() }
                 .tabItem {
-                    Image(systemName: "gearshape.fill")
-                    Text("Settings")
+                    Image("ic_setting")
                 }
         }
         .accentColor(AppColor.Pink)

@@ -34,7 +34,7 @@ struct DownloadedVideosView: View {
     // MARK: - Empty State
     private var emptyStateView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "tray")
+            Image(systemName: "play.slash.fill")
                 .resizable()
                 .scaledToFit()
                 .foregroundColor(AppColor.Pink)
@@ -195,7 +195,7 @@ struct DownloadedVideosView: View {
             }
         } label: {
             Image(systemName: "ellipsis.circle.fill")
-                .font(.system(size: 22))
+                .font(.system(size: 30))
                 .foregroundColor(.white)
                 .padding(10)
         }
@@ -208,7 +208,7 @@ struct DownloadedVideosView: View {
             showDeleteAlert = true
         } label: {
             Image(systemName: "trash.circle.fill")
-                .font(.system(size: 24))
+                .font(.system(size: 30))
                 .foregroundColor(.white)
                 .padding(10)
         }
