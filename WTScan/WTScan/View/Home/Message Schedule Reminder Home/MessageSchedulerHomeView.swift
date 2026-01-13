@@ -19,13 +19,13 @@ struct MessageSchedulerHomeView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     schedulerReminderSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -46,7 +46,7 @@ struct MessageSchedulerHomeView: View {
                         .foregroundStyle(.white)
                         .padding(15)
                         .frame(width: 55, height: 55)
-                        .background(Color.btnDarkGreen)
+                        .background(AppColor.Pink)
                         .clipShape(Circle())
                         .onTapGesture {
                             viewModel.btnCreateReminderAction()
@@ -72,9 +72,9 @@ struct MessageSchedulerHomeView: View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 12) {
-                    WTText(title: "⏰ Scheduled Reminders", color: .black, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
+                    WTText(title: "⏰ Scheduled Reminders", color: .white, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
                     
-                    WTText(title: "Your upcoming message reminders", color: .black, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
+                    WTText(title: "Your upcoming message reminders", color: .white, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
                 }
                 .padding(.horizontal, 16)
               
@@ -82,7 +82,7 @@ struct MessageSchedulerHomeView: View {
                     VStack(alignment: .leading, spacing: 0) {
                         if viewModel.arrReminders.isEmpty {
                             ContentUnavailableView("No Reminders", image: "", description: Text("You have no pending reminders. Add a reminder to stay on track."))
-                                .preferredColorScheme(.light)
+                                .preferredColorScheme(.dark)
                         } else {
                             ScrollView(.vertical) {
                                 VStack(alignment: .leading, spacing: 15) {
@@ -98,7 +98,7 @@ struct MessageSchedulerHomeView: View {
                     }
                     .padding(16)
                 }
-                .background(Color.white)
+                .background(AppColor.Gray.opacity(0.12))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(.horizontal, 16)
                 .padding(.top, 16)
@@ -116,16 +116,16 @@ extension MessageSchedulerHomeView {
     private func reminderRow(reminder: WTMessageReminder) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 5) {
-                WTText(title: reminder.messageText, color: Color(hex: "282A2F"), font: .system(size: 21, weight: .semibold, design: .default), alignment: .leading)
+                WTText(title: reminder.messageText, color: .white, font: .system(size: 21, weight: .semibold, design: .default), alignment: .leading)
                 
-                WTText(title: Utility.formatteDate(date: reminder.scheduleDate, formate: "MMMM d, yyyy 'at' h:mm a"), color: Color(hex: "282A2F"), font: .system(size: 17, weight: .light, design: .default), alignment: .leading)
+                WTText(title: Utility.formatteDate(date: reminder.scheduleDate, formate: "MMMM d, yyyy 'at' h:mm a"), color: .white, font: .system(size: 17, weight: .light, design: .default), alignment: .leading)
             }
             .padding(18)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 12)
-                .fill(Color.lightGreenTextfield)
+                .fill(AppColor.Gray.opacity(0.12))
                 .stroke(Color.lightBorderGrey, lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)

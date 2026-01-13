@@ -17,13 +17,13 @@ struct MessageSchedulerReminderView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     messageScheduleReminderSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -48,16 +48,16 @@ struct MessageSchedulerReminderView: View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 12) {
-                    WTText(title: "⏰ Message schedule reminder", color: .black, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
+                    WTText(title: "⏰ Message schedule reminder", color: .white, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
                     
-                    WTText(title: "Schedule reminders for important message", color: .black, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
+                    WTText(title: "Schedule reminders for important message", color: .white, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
                 }
                 .padding(.horizontal, 16)
                 
                 VStack {
                     VStack(alignment: .leading, spacing: 0) {
                         VStack(alignment: .leading, spacing: 0) {
-                            WTText(title: "Enter message text", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Enter message text", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .padding(.leading, 8)
                                 .padding(.bottom, 10)
                             
@@ -65,7 +65,7 @@ struct MessageSchedulerReminderView: View {
                                 .frame(height: 50)
                                 .padding(.bottom, 20)
                             
-                            WTText(title: "Select reminder time", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Select reminder time", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .padding(.leading, 8)
                                 .padding(.bottom, 10)
                             
@@ -96,7 +96,7 @@ struct MessageSchedulerReminderView: View {
                     }
                     .padding(16)
                 }
-                .background(Color.white)
+                .background(AppColor.Gray.opacity(0.12))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(16)
                 .frame(maxWidth: .infinity)

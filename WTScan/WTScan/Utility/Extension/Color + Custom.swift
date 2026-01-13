@@ -44,56 +44,119 @@ extension Color {
     }
 }
 
-extension Color {
-    static var btnDarkGreen: Color { AppState.shared.isLive ? .btnDarkGreenMain : Color(hex: "6F57FF") }
-    static var greenBg: Color { AppState.shared.isLive ? .greenBgMain : Color(hex: "D2CBFF") }
-    static var lightGreenBg: Color { AppState.shared.isLive ? .lightGreenBgMain : Color(hex: "ECF2FF") }
-    static var lightBorderGrey: Color { AppState.shared.isLive ? .lightBorderGreyMain : Color(hex: "BFBFBF") }
-    static var lightGreenTextfield: Color { AppState.shared.isLive ? .lightGreenTextfieldMain : Color(hex: "F5F8FF") }
-    static var navBackground: Color { AppState.shared.isLive ? .navBackgroundMain : Color(hex: "0E8A6D") }
-    static var navIcon: Color { AppState.shared.isLive ? .navIconMain : Color(hex: "6F57FF") }
-}
+//extension Color {
+//    static var btnDarkGreen: Color { AppState.shared.isLive ? .btnDarkGreenMain : Color(hex: "6F57FF") }
+//    static var greenBg: Color { AppState.shared.isLive ? .greenBgMain : Color(hex: "D2CBFF") }
+//    static var lightGreenBg: Color { AppState.shared.isLive ? .lightGreenBgMain : Color(hex: "ECF2FF") }
+//    static var lightBorderGrey: Color { AppState.shared.isLive ? .lightBorderGreyMain : Color(hex: "BFBFBF") }
+//    static var lightGreenTextfield: Color { AppState.shared.isLive ? .lightGreenTextfieldMain : Color(hex: "F5F8FF") }
+//    static var navBackground: Color { AppState.shared.isLive ? .navBackgroundMain : Color(hex: "0E8A6D") }
+//    static var navIcon: Color { AppState.shared.isLive ? .navIconMain : Color(hex: "6F57FF") }
+//}
 
 extension LinearGradient {
+//    static var wtGreen: LinearGradient {
+//        LinearGradient(
+//            colors: AppState.shared.isLive ?
+//            [
+//                Color(hex: "#14CD10"),
+//                Color(hex: "#07A020"),
+//                Color(hex: "#07A020"),
+//                Color(hex: "#07A020"),
+//                Color(hex: "#07A020"),
+//                Color(hex: "#07A020"),
+//                Color(hex: "#07A020")
+//            ] :
+//                [
+//                    Color(hex: "#10A3FF"),
+//                    Color(hex: "#6F57FF"),
+//                    Color(hex: "#6F57FF"),
+//                    Color(hex: "#6F57FF"),
+//                    Color(hex: "#6F57FF"),
+//                    Color(hex: "#6F57FF"),
+//                    Color(hex: "#6F57FF")
+//                ],
+//            startPoint: .top,
+//            endPoint: .bottom
+//        )
+//    }
+    
+//    static var optionBg: LinearGradient {
+//        LinearGradient(
+//            colors: AppState.shared.isLive ?
+//            [
+//                Color(hex: "#14CD10"),
+//                Color(hex: "#07A020")
+//            ] :
+//                [
+//                    Color(hex: "10A3FF"),
+//                    Color(hex: "6F57FF")
+//                ],
+//            startPoint: .top,
+//            endPoint: .bottom
+//        )
+//    }
+    
     static var wtGreen: LinearGradient {
         LinearGradient(
-            colors: AppState.shared.isLive ?
-            [
-                Color(hex: "#14CD10"),
-                Color(hex: "#07A020"),
-                Color(hex: "#07A020"),
-                Color(hex: "#07A020"),
-                Color(hex: "#07A020"),
-                Color(hex: "#07A020"),
-                Color(hex: "#07A020")
-            ] :
-                [
-                    Color(hex: "#10A3FF"),
-                    Color(hex: "#6F57FF"),
-                    Color(hex: "#6F57FF"),
-                    Color(hex: "#6F57FF"),
-                    Color(hex: "#6F57FF"),
-                    Color(hex: "#6F57FF"),
-                    Color(hex: "#6F57FF")
-                ],
-            startPoint: .top,
-            endPoint: .bottom
+            gradient: Gradient(colors: [
+                AppColor.Pink, // Color 1
+                AppColor.Pink, // Color 2
+                AppColor.Pink  // Color 3
+            ]),
+            startPoint: .bottomLeading,
+            endPoint: .topTrailing
         )
     }
     
     static var optionBg: LinearGradient {
         LinearGradient(
-            colors: AppState.shared.isLive ?
-            [
-                Color(hex: "#14CD10"),
-                Color(hex: "#07A020")
-            ] :
-                [
-                    Color(hex: "10A3FF"),
-                    Color(hex: "6F57FF")
-                ],
-            startPoint: .top,
-            endPoint: .bottom
+            gradient: Gradient(stops: [
+                // Bottom-left (dark greenish black)
+                .init(
+                    color: Color(
+                        red: 31.0 / 255.0,
+                        green: 41.0 / 255.0,
+                        blue: 41.0 / 255.0
+                    ),
+                    location: 0.0
+                ),
+
+                // Center (deep dark gray)
+                .init(
+                    color: Color(
+                        red: 24.0 / 255.0,
+                        green: 24.0 / 255.0,
+                        blue: 24.0 / 255.0
+                    ),
+                    location: 0.52
+                ),
+
+                // Top-right (purple)
+                .init(
+                    color: Color(
+                        red: 57.0 / 255.0,
+                        green: 28.0 / 255.0,
+                        blue: 54.0 / 255.0
+                    ),
+                    location: 1.0
+                )
+            ]),
+            startPoint: .bottomLeading,
+            endPoint: .topTrailing
         )
     }
+
+
+
+}
+
+extension Color {
+    static var btnDarkGreen: Color { AppState.shared.isLive ? .btnDarkGreenMain : Color(hex: "6F57FF") }
+    static var greenBg: Color { Color.black }
+    static var lightGreenBg: Color { Color.black }
+    static var lightBorderGrey: Color { AppState.shared.isLive ? .lightBorderGreyMain : Color(hex: "BFBFBF") }
+    static var lightGreenTextfield: Color { AppState.shared.isLive ? .lightGreenTextfieldMain : Color(hex: "F5F8FF") }
+    static var navBackground: Color { AppState.shared.isLive ? .navBackgroundMain : Color(hex: "0E8A6D") }
+    static var navIcon: Color { AppState.shared.isLive ? .navIconMain : Color(hex: "6F57FF") }
 }

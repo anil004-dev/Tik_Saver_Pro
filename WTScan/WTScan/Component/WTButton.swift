@@ -21,7 +21,7 @@ struct WTButton: View {
                 WTText(title: title, color: .white, font: .system(size: 18, weight: .semibold, design: .default), alignment: .center)
             }
             .frame(maxWidth: .infinity, minHeight: height, maxHeight: height, alignment: .center)
-            .background(Color.btnDarkGreen)
+            .background(AppColor.Pink)
             .clipShape(RoundedRectangle(cornerRadius: 17))
             .shadow(color: .black.opacity(0.16), radius: 1, x: 0, y: 0)
         }

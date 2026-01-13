@@ -22,13 +22,13 @@ struct StylishTextView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     stylishTextSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -66,7 +66,7 @@ struct StylishTextView: View {
                             .resizable()
                             .scaledToFit()
                             .fontWeight(.semibold)
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                             .frame(width: 17, height: 22)
                     }
                     .frame(width: 36, height: 36)
@@ -79,7 +79,7 @@ struct StylishTextView: View {
                         Image(systemName: "document.on.document.fill")
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(.black)
+                            .foregroundStyle(.white)
                             .frame(width: 21, height: 25)
                     }
                     .frame(width: 36, height: 36)
@@ -91,15 +91,14 @@ struct StylishTextView: View {
                 .frame(height: 40)
                 .background {
                     Capsule()
-                        .fill(Color.greenBg)
-                        .stroke(.black, lineWidth: 1)
+                        .fill(AppColor.Gray.opacity(0.12))
                         .padding(1)
                         .frame(maxHeight: .infinity)
                 }
             }
             
             VStack(alignment: .leading, spacing: 5) {
-                WTText(title: "Enter text", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                WTText(title: "Enter text", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                     .padding(.leading, 8)
                 
                 WTTextField(placeHolder: "Hello", text: $viewModel.enteredText)
@@ -130,7 +129,7 @@ struct StylishTextView: View {
                 }
                 .padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
         }
         .padding(.horizontal, 16)
@@ -145,7 +144,7 @@ struct StylishTextView: View {
                 HStack(alignment: .center, spacing: 0) {
                     WTText(
                         title: style.name,
-                        color: .black,
+                        color: .white,
                         font: .system(size: 14, weight: .regular, design: .default),
                         alignment: .leading
                     )
@@ -156,7 +155,7 @@ struct StylishTextView: View {
                 
                 WTText(
                     title: style.transform(viewModel.enteredText.isEmpty ? "Hello" : viewModel.enteredText) ,
-                    color: Color.black,
+                    color: Color.white,
                     font: .system(size: 22, weight: .bold, design: .default),
                     alignment: .leading,
                     lineLimit: 1
@@ -168,8 +167,8 @@ struct StylishTextView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 20)
-                .fill(Color.lightGreenBg)
-                .stroke(Color.btnDarkGreen, lineWidth: viewModel.selectedStyle?.id == style.id ? 2 : 0)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(Color.white, lineWidth: viewModel.selectedStyle?.id == style.id ? 2 : 0)
                 .padding(1)
         }
         .onTapGesture {

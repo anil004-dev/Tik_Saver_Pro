@@ -98,7 +98,7 @@ struct HomeView: View {
                 .padding(.bottom, 25)
                 
                 ZStack {
-                    Color.lightGreenBg.ignoresSafeArea()
+                    LinearGradient.optionBg.ignoresSafeArea()
                         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                     
                     VStack(alignment: .leading, spacing: 0) {
@@ -122,7 +122,7 @@ struct HomeView: View {
     @ViewBuilder
     private func sectionRow(section: WTOptionSection) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            WTText(title: section.title, color: .black, font: .system(size: 20, weight: .bold, design: .default), alignment: .leading)
+            WTText(title: section.title, color: .white, font: .system(size: 20, weight: .bold, design: .default), alignment: .leading)
                 .padding(.top, 20)
                 .padding(.bottom, 15)
             
@@ -139,7 +139,7 @@ struct HomeView: View {
                     )
                 }
             }
-            .background(Color.white)
+            .background(AppColor.Gray.opacity(0.12))
             .frame(maxWidth: .infinity, alignment: .leading)
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(color: .black.opacity(0.07), radius: 2, x: 0, y: 0)
@@ -157,14 +157,14 @@ struct HomeView: View {
                         .frame(width: 26, height: 26)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(LinearGradient.optionBg)
+                                .fill(AppColor.Pink)
                                 .frame(width: 40, height: 40)
                         }
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        WTText(title: option.title, color: .black, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
+                        WTText(title: option.title, color: .white, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
                         if !option.subTitle.isEmpty {
-                            WTText(title: option.subTitle, color: .black, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
+                            WTText(title: option.subTitle, color: .white, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
                         }
                     }
                     
@@ -182,12 +182,12 @@ struct HomeView: View {
             
             if showSeparator {
                 Rectangle()
-                    .fill(Color(hex: "E8E8E8"))
+                    .fill(.white.opacity(0.2))
                     .frame(height: 1)
                     .padding(.horizontal, 20)
             }
         }
-        .background(.white)
+        //.background(.white)
         .onTapGesture {
             onTap()
         }

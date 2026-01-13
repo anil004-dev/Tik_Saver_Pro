@@ -18,13 +18,13 @@ struct ClipboardTemplateView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     clipboardTemplateSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -70,7 +70,7 @@ struct ClipboardTemplateView: View {
                     WTText(title: "Add New Template", color: .white, font: .system(size: 18, weight: .semibold, design: .default), alignment: .center)
                 }
                 .frame(maxWidth: .infinity, minHeight: 51, maxHeight: 51, alignment: .center)
-                .background(Color.btnDarkGreen)
+                .background(AppColor.Pink)
                 .clipShape(RoundedRectangle(cornerRadius: 17))
             }
             .padding(.horizontal, 16)
@@ -86,7 +86,7 @@ struct ClipboardTemplateView: View {
             VStack(alignment: .leading, spacing: 0) {
                 ScrollView(.vertical) {
                     VStack(alignment: .leading, spacing: 0) {
-                        WTText(title: "Saved Template", color: .black, font: .system(size: 18, weight: .semibold, design: .default), alignment: .leading)
+                        WTText(title: "Saved Template", color: .white, font: .system(size: 18, weight: .semibold, design: .default), alignment: .leading)
                             .padding(.bottom, 14)
                             .padding(.horizontal, 4)
                         
@@ -108,7 +108,7 @@ struct ClipboardTemplateView: View {
             }
             .padding(16)
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 11))
         .padding(.top, 16)
         .padding(.horizontal, 16)
@@ -118,13 +118,13 @@ struct ClipboardTemplateView: View {
     @ViewBuilder func clipboardRow(clipboard: WTClipboardModel, onTap: @escaping (() -> Void)) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center, spacing: 23) {
-                WTText(title: clipboard.clipboardText, color: .black, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
+                WTText(title: clipboard.clipboardText, color: .white, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Image(systemName: "document.on.document.fill")
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(Color.btnDarkGreen)
+                    .foregroundStyle(AppColor.Pink)
                     .frame(width: 22, height: 28)
             }
             .padding(.vertical, 15)
@@ -134,8 +134,7 @@ struct ClipboardTemplateView: View {
         .clipShape(RoundedRectangle(cornerRadius: 17))
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }

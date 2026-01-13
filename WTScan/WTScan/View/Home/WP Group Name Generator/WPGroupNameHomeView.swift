@@ -21,13 +21,13 @@ struct WPGroupNameHomeView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     groupCategorySection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -66,7 +66,7 @@ struct WPGroupNameHomeView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .bold()
-                                        .foregroundStyle(Color.btnDarkGreen)
+                                        .foregroundStyle(Color.white)
                                         .frame(width: 23, height: 23)
                                     
                                     WTText(title: "Generate Random Name", color: .white, font: .system(size: 18, weight: .medium, design: .default), alignment: .leading)
@@ -75,7 +75,7 @@ struct WPGroupNameHomeView: View {
                             }
                             .frame(height: 55)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color.btnDarkGreen)
+                            .background(AppColor.Pink)
                             .clipShape(RoundedRectangle(cornerRadius: 17))
                         }
                         
@@ -83,13 +83,13 @@ struct WPGroupNameHomeView: View {
                             ZStack(alignment: .topTrailing) {
                                 VStack(alignment: .leading, spacing: 0) {
                                     HStack(alignment: .center, spacing: 23) {
-                                        WTText(title: randomGroupName, color: .black, font: .system(size: 18, weight: .medium, design: .default), alignment: .leading)
+                                        WTText(title: randomGroupName, color: .white, font: .system(size: 18, weight: .medium, design: .default), alignment: .leading)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                         
                                         Image(systemName: "document.on.document.fill")
                                             .resizable()
                                             .scaledToFit()
-                                            .foregroundStyle(Color.btnDarkGreen)
+                                            .foregroundStyle(AppColor.Pink)
                                             .frame(width: 22, height: 28)
                                             .onTapGesture {
                                                 viewModel.btnCopyAction(groupName: randomGroupName)
@@ -98,7 +98,7 @@ struct WPGroupNameHomeView: View {
                                         Image(systemName: "xmark")
                                             .resizable()
                                             .scaledToFit()
-                                            .foregroundStyle(Color.btnDarkGreen)
+                                            .foregroundStyle(AppColor.Pink)
                                             .frame(width: 18, height: 18)
                                             .onTapGesture {
                                                 viewModel.btnRemoveRandomNameAction()
@@ -111,8 +111,8 @@ struct WPGroupNameHomeView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 17))
                                 .background {
                                     RoundedRectangle(cornerRadius: 17)
-                                        .fill(Color.lightGreenTextfield)
-                                        .stroke(Color.lightBorderGrey, lineWidth: 1)
+                                        .fill(AppColor.Gray.opacity(0.12))
+                                        .stroke(Color.white.opacity(0.5), lineWidth: 1)
                                         .padding(1)
                                         .frame(maxHeight: .infinity)
                                 }
@@ -141,7 +141,7 @@ struct WPGroupNameHomeView: View {
             }
             .padding(16)
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 11))
         .padding(.top, 16)
         .padding(.horizontal, 16)
@@ -153,14 +153,14 @@ struct WPGroupNameHomeView: View {
             HStack(alignment: .center, spacing: 8) {
                 WTText(
                     title: category.emoji,
-                    color: .black,
+                    color: .white,
                     font: .system(size: 20, weight: .regular, design: .default),
                     alignment: .leading
                 )
                 
                 WTText(
                     title: category.name,
-                    color: .black,
+                    color: .white,
                     font: .system(size: 20, weight: .regular, design: .default),
                     alignment: .leading,
                     minimumScale: 0.8,
@@ -174,8 +174,8 @@ struct WPGroupNameHomeView: View {
         .clipShape(RoundedRectangle(cornerRadius: 17))
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }

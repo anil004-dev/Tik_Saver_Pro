@@ -22,13 +22,13 @@ struct TextCaseConverterView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     textCaseConverterSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -69,7 +69,7 @@ struct TextCaseConverterView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 17, height: 22)
                                 }
                                 .frame(width: 36, height: 36)
@@ -82,7 +82,7 @@ struct TextCaseConverterView: View {
                                     Image(systemName: "document.on.document.fill")
                                         .resizable()
                                         .scaledToFit()
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 21, height: 25)
                                 }
                                 .frame(width: 36, height: 36)
@@ -94,15 +94,14 @@ struct TextCaseConverterView: View {
                             .frame(height: 40)
                             .background {
                                 Capsule()
-                                    .fill(Color.greenBg)
-                                    .stroke(.black, lineWidth: 1)
+                                    .fill(AppColor.Pink)
                                     .padding(1)
                                     .frame(maxHeight: .infinity)
                             }
                         }
                         
                         VStack(alignment: .leading, spacing: 5) {
-                            WTText(title: "Enter text", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Enter text", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.leading, 8)
                             
@@ -138,7 +137,7 @@ struct TextCaseConverterView: View {
                 }
                 .padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
             .padding(16)
             .padding(.bottom, 100)
@@ -153,7 +152,7 @@ struct TextCaseConverterView: View {
                 HStack(alignment: .center, spacing: 0) {
                     WTText(
                         title: textCase.rawValue,
-                        color: .black,
+                        color: .white,
                         font: .system(size: 16, weight: .regular, design: .default),
                         alignment: .leading
                     )
@@ -167,8 +166,8 @@ struct TextCaseConverterView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(viewModel.selectedCase == textCase ? Color.btnDarkGreen : Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(viewModel.selectedCase == textCase ? AppColor.Pink : Color.white, lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }

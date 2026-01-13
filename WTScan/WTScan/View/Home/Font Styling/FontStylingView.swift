@@ -17,13 +17,13 @@ struct FontStylingView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     fontStylingSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -56,7 +56,7 @@ struct FontStylingView: View {
     private var fontStylingSection: some View {
         VStack(alignment: .leading, spacing: 5) {
             VStack(alignment: .leading, spacing: 5) {
-                WTText(title: "Enter text", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                WTText(title: "Enter text", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 8)
                 
@@ -74,7 +74,7 @@ struct FontStylingView: View {
         VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 10) {
-                    WTText(title: "Previews", color: .black, font: .system(size: 18, weight: .semibold, design: .default), alignment: .leading)
+                    WTText(title: "Previews", color: .white, font: .system(size: 18, weight: .semibold, design: .default), alignment: .leading)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 8)
                     
@@ -101,7 +101,7 @@ struct FontStylingView: View {
             }
             .padding(16)
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 11))
         .padding(.top, 16)
         .padding(.horizontal, 16)
@@ -114,7 +114,7 @@ struct FontStylingView: View {
             HStack(alignment: .center, spacing: 0) {
                 let stylishFontText = viewModel.getFontStyleText(fontStyle: style)
                 
-                WTText(title: stylishFontText, color: .black, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
+                WTText(title: stylishFontText, color: .white, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, 16)
                 
@@ -123,14 +123,13 @@ struct FontStylingView: View {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(Color.btnDarkGreen)
+                            .foregroundStyle(Color.white)
                             .frame(width: 15, height: 19)
                     }
                     .frame(width: 36, height: 36, alignment: .center)
                     .background {
                         Circle()
-                            .fill(Color.lightGreenTextfield)
-                            .stroke(Color.lightBorderGrey, lineWidth: 1)
+                            .fill(AppColor.Pink)
                             .padding(1)
                             .frame(maxHeight: .infinity)
                     }
@@ -142,14 +141,13 @@ struct FontStylingView: View {
                         Image(systemName: "document.on.document")
                             .resizable()
                             .scaledToFit()
-                            .foregroundStyle(Color.btnDarkGreen)
+                            .foregroundStyle(Color.white)
                             .frame(width: 16, height: 19)
                     }
                     .frame(width: 36, height: 36, alignment: .center)
                     .background {
                         Circle()
-                            .fill(Color.lightGreenTextfield)
-                            .stroke(Color.lightBorderGrey, lineWidth: 1)
+                            .fill(AppColor.Pink)
                             .padding(1)
                             .frame(maxHeight: .infinity)
                     }
@@ -164,8 +162,8 @@ struct FontStylingView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }

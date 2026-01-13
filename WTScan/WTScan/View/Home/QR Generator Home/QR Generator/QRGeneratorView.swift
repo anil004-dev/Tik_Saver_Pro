@@ -27,13 +27,13 @@ struct QRGeneratorView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     qrGenerationSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -102,7 +102,7 @@ struct QRGeneratorView: View {
                             
                         }.padding(16)
                     }
-                    .background(.white)
+                    .background(AppColor.Gray.opacity(0.12))
                     .clipShape(RoundedRectangle(cornerRadius: 11))
                     .padding(16)
                     .padding(.bottom, 100)
@@ -184,7 +184,7 @@ extension QRGeneratorView {
     @ViewBuilder
     private func qrTextField(title: String, placeHolder: String = "", text: Binding<String>, keyboardType: UIKeyboardType = .default) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            WTText(title: title, color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+            WTText(title: title, color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                 .padding(.leading, 8)
             
             WTTextField(placeHolder: placeHolder, text: text, keyboardType: keyboardType)
@@ -195,7 +195,7 @@ extension QRGeneratorView {
     @ViewBuilder
     private func qrTextView(title: String, placeHolder: String = "", text: Binding<String>, keyboardType: UIKeyboardType = .default) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            WTText(title: title, color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+            WTText(title: title, color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                 .padding(.leading, 8)
             
             WTTextView(placeHolder: placeHolder, text: text, keyboardType: keyboardType)

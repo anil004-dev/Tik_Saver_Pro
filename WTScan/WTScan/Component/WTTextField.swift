@@ -18,7 +18,7 @@ struct WTTextField: View {
             Spacer(minLength: 0)
             ZStack {
                 if text.isEmpty {
-                    WTText(title: placeHolder, color: .init(hex: "6A6C6C"), font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
+                    WTText(title: placeHolder, color: .gray, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
                         .padding(.horizontal, 16)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }

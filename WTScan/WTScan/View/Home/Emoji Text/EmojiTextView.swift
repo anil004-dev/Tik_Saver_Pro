@@ -18,13 +18,13 @@ struct EmojiTextView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     textToEmojiSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -56,7 +56,7 @@ struct EmojiTextView: View {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: 5) {
-                        WTText(title: "Enter text", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                        WTText(title: "Enter text", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
                         
@@ -67,7 +67,7 @@ struct EmojiTextView: View {
                     
                     HStack(alignment: .center, spacing: 17) {
                         VStack(alignment: .leading, spacing: 5) {
-                            WTText(title: "Enter Emoji", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Enter Emoji", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .padding(.leading, 8)
                             
                             WTTextField(placeHolder: "", text: $viewModel.emojiText, keyboardType: .default)
@@ -108,7 +108,7 @@ struct EmojiTextView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 17, height: 22)
                                 }
                                 .frame(width: 36, height: 36)
@@ -121,7 +121,7 @@ struct EmojiTextView: View {
                                     Image(systemName: "document.on.document.fill")
                                         .resizable()
                                         .scaledToFit()
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 21, height: 25)
                                 }
                                 .frame(width: 36, height: 36)
@@ -133,8 +133,7 @@ struct EmojiTextView: View {
                             .frame(height: 40)
                             .background {
                                 Capsule()
-                                    .fill(Color.greenBg)
-                                    .stroke(.black, lineWidth: 1)
+                                    .fill(AppColor.Pink)
                                     .padding(1)
                                     .frame(maxHeight: .infinity)
                             }
@@ -167,7 +166,7 @@ struct EmojiTextView: View {
                 }
                 .padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
             .padding(16)
         }

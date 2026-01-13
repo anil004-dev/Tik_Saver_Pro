@@ -22,13 +22,13 @@ struct StatusCaptionListView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     statusCaptionListSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -72,7 +72,7 @@ struct StatusCaptionListView: View {
             }
             .padding(16)
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 11))
         .padding(.top, 16)
         .padding(.horizontal, 16)
@@ -82,13 +82,13 @@ struct StatusCaptionListView: View {
     @ViewBuilder func captionRow(caption: WTCaptionItem, onTap: @escaping (() -> Void)) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center, spacing: 23) {
-                WTText(title: caption.text, color: .black, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
+                WTText(title: caption.text, color: .white, font: .system(size: 18, weight: .regular, design: .default), alignment: .leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Image(systemName: "document.on.document.fill")
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(Color.btnDarkGreen)
+                    .foregroundStyle(AppColor.Pink)
                     .frame(width: 22, height: 28)
             }
             .padding(.vertical, 15)
@@ -98,8 +98,8 @@ struct StatusCaptionListView: View {
         .clipShape(RoundedRectangle(cornerRadius: 17))
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(Color.white.opacity(0.5), lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }

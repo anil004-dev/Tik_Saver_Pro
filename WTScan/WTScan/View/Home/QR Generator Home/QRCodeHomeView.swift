@@ -21,13 +21,13 @@ struct QRCodeHomeView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     qrCodeListSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -68,7 +68,7 @@ struct QRCodeHomeView: View {
                     }
                 }.padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
             .padding(.top, 16)
             .padding(.horizontal, 16)
@@ -83,12 +83,12 @@ struct QRCodeHomeView: View {
                     .resizable()
                     .scaledToFit()
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.btnDarkGreen)
+                    .foregroundStyle(Color.white)
                     .frame(width: optionModel.imageSize.width, height: optionModel.imageSize.height)
                 
                 WTText(
                     title: optionModel.title,
-                    color: .black,
+                    color: .white,
                     font: .system(size: 18, weight: .regular, design: .default),
                     alignment: .center
                 )
@@ -99,7 +99,7 @@ struct QRCodeHomeView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
+                .fill(AppColor.Gray.opacity(0.12))
                 .stroke(Color.lightBorderGrey, lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)

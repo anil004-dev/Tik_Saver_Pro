@@ -17,13 +17,13 @@ struct MessageTextCounterView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     messageTextCounterSection
                 }
-                .background(Color.lightGreenBg)
+                //.background(Color.lightGreenBg)
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -53,11 +53,11 @@ struct MessageTextCounterView: View {
                             .frame(height: 200)
                         
                         HStack(alignment: .center, spacing: 0) {
-                            WTText(title: "Charecters:", color: .black, font: .system(size: 18, weight: .medium, design: .default), alignment: .leading)
+                            WTText(title: "Charecters:", color: .white, font: .system(size: 18, weight: .medium, design: .default), alignment: .leading)
                             
                             Spacer()
                             
-                            WTText(title: "\(viewModel.messageText.count)", color: .black, font: .system(size: 18, weight: .semibold, design: .default), alignment: .trailing)
+                            WTText(title: "\(viewModel.messageText.count)", color: .white, font: .system(size: 18, weight: .semibold, design: .default), alignment: .trailing)
                         }
                         .padding(.vertical, 20)
                         
@@ -76,7 +76,7 @@ struct MessageTextCounterView: View {
                             }
                             .frame(height: 48)
                             .frame(maxWidth: .infinity)
-                            .background(Color.btnDarkGreen)
+                            .background(AppColor.Pink)
                             .clipShape(RoundedRectangle(cornerRadius: 17))
                             .padding(.top, 10)
                             .onTapGesture {
@@ -97,7 +97,7 @@ struct MessageTextCounterView: View {
                             }
                             .frame(height: 48)
                             .frame(maxWidth: .infinity)
-                            .background(Color.btnDarkGreen)
+                            .background(AppColor.Pink)
                             .clipShape(RoundedRectangle(cornerRadius: 17))
                             .padding(.top, 10)
                             .onTapGesture {
@@ -110,7 +110,7 @@ struct MessageTextCounterView: View {
                 }
                 .padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
             .padding(16)
         }

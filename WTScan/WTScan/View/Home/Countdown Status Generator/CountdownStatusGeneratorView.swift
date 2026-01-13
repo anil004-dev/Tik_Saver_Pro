@@ -17,13 +17,13 @@ struct CountdownStatusGeneratorView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     countdownSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -48,16 +48,16 @@ struct CountdownStatusGeneratorView: View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 12) {
-                    WTText(title: "🗓️ Countdown Status Generator", color: .black, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
+                    WTText(title: "🗓️ Countdown Status Generator", color: .white, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
                     
-                    WTText(title: "Create a countdown based caption for\nspecial events!", color: .black, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
+                    WTText(title: "Create a countdown based caption for\nspecial events!", color: .white, font: .system(size: 16, weight: .regular, design: .default), alignment: .leading)
                 }
                 .padding(.horizontal, 16)
                 
                 VStack {
                     VStack(alignment: .leading, spacing: 0) {
                         VStack(alignment: .leading, spacing: 0) {
-                            WTText(title: "What's your occassion?", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "What's your occassion?", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .padding(.bottom, 10)
                             
                             VStack(alignment: .leading, spacing: 0) {
@@ -105,7 +105,7 @@ struct CountdownStatusGeneratorView: View {
                             }
                             .padding(.bottom, 20)
                             
-                            WTText(title: "Select date of the event", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Select date of the event", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                             
                             HStack {
                                 DatePicker(
@@ -116,7 +116,8 @@ struct CountdownStatusGeneratorView: View {
                                 )
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
-                                
+                                .tint(AppColor.Pink)
+                                .foregroundStyle(AppColor.Pink)
                                 Spacer()
                             }
                             .padding(.top, 10)
@@ -154,7 +155,7 @@ struct CountdownStatusGeneratorView: View {
                     }
                     .padding(16)
                 }
-                .background(Color.white)
+                .background(AppColor.Gray.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .padding(16)
                 .frame(maxWidth: .infinity)

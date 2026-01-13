@@ -17,13 +17,13 @@ struct TextRepeaterView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     textRepeaterSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -55,7 +55,7 @@ struct TextRepeaterView: View {
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     VStack(alignment: .leading, spacing: 5) {
-                        WTText(title: "Enter text to repeat", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                        WTText(title: "Enter text to repeat", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.leading, 8)
                         
@@ -66,7 +66,7 @@ struct TextRepeaterView: View {
                     
                     HStack(alignment: .center, spacing: 17) {
                         VStack(alignment: .leading, spacing: 5) {
-                            WTText(title: "Repeat frequiency", color: .black, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
+                            WTText(title: "Repeat frequiency", color: .white, font: .system(size: 16, weight: .semibold, design: .default), alignment: .leading)
                                 .padding(.leading, 8)
                             
                             WTTextField(placeHolder: "5", text: $viewModel.repeatCount, keyboardType: .numberPad)
@@ -100,7 +100,7 @@ struct TextRepeaterView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .fontWeight(.semibold)
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 17, height: 22)
                                 }
                                 .frame(width: 36, height: 36)
@@ -113,7 +113,7 @@ struct TextRepeaterView: View {
                                     Image(systemName: "document.on.document.fill")
                                         .resizable()
                                         .scaledToFit()
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.white)
                                         .frame(width: 21, height: 25)
                                 }
                                 .frame(width: 36, height: 36)
@@ -125,8 +125,7 @@ struct TextRepeaterView: View {
                             .frame(height: 40)
                             .background {
                                 Capsule()
-                                    .fill(Color.greenBg)
-                                    .stroke(.black, lineWidth: 1)
+                                    .fill(AppColor.Pink)
                                     .padding(1)
                                     .frame(maxHeight: .infinity)
                             }
@@ -158,7 +157,7 @@ struct TextRepeaterView: View {
                 }
                 .padding(16)
             }
-            .background(.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 11))
             .padding(16)
         }

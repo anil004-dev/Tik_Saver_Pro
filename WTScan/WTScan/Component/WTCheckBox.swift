@@ -17,23 +17,23 @@ struct WTCheckBox: View {
                 Image(systemName: "checkmark")
                     .resizable()
                     .scaledToFit()
-                    .foregroundStyle(.black)
+                    .foregroundStyle(AppColor.Pink)
                     .frame(width: 14, height: 14)
                     .opacity(isSelected ? 1 : 0)
                     .transition(.opacity)
             }
             .background {
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.lightGreenTextfield)
-                    .stroke(Color.lightBorderGrey, lineWidth: 1)
+                    .fill(Color.clear)
+                    .stroke(Color.white, lineWidth: 1)
                     .padding(1)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 28, height: 28)
             
-            WTText(title: title, color: .black, font: .system(size: 16, weight: .medium, design: .default), alignment: .leading)
+            WTText(title: title, color: .white, font: .system(size: 16, weight: .medium, design: .default), alignment: .leading)
         }
-        .background(Color.white)
+        .background(Color.clear)
         .frame(maxWidth: .infinity, alignment: .leading)
         .onTapGesture {
             isSelected.toggle()

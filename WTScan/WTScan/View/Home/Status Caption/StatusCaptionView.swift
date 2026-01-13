@@ -21,13 +21,13 @@ struct StatusCaptionView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack(alignment: .top) {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     statusCaptionSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -72,7 +72,7 @@ struct StatusCaptionView: View {
             }
             .padding(16)
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .clipShape(RoundedRectangle(cornerRadius: 11))
         .padding(.top, 16)
         .padding(.horizontal, 16)
@@ -88,12 +88,12 @@ struct StatusCaptionView: View {
                     .resizable()
                     .scaledToFit()
                     .fontWeight(.semibold)
-                    .foregroundStyle(Color.btnDarkGreen)
+                    .foregroundStyle(AppColor.Pink)
                     .frame(width: 35, height: 35)
                 
                 WTText(
                     title: category.name,
-                    color: .black,
+                    color: .white,
                     font: .system(size: 14, weight: .semibold, design: .default),
                     alignment: .center
                 )
@@ -106,8 +106,8 @@ struct StatusCaptionView: View {
         .frame(maxWidth: .infinity, alignment: .center)
         .background {
             RoundedRectangle(cornerRadius: 17)
-                .fill(Color.lightGreenTextfield)
-                .stroke(Color.lightBorderGrey, lineWidth: 1)
+                .fill(AppColor.Gray.opacity(0.12))
+                .stroke(.white.opacity(0.5), lineWidth: 1)
                 .padding(1)
                 .frame(maxHeight: .infinity)
         }
