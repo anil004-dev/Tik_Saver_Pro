@@ -16,7 +16,11 @@ struct BookmarkListView: View {
             List {
                 if store.items.isEmpty {
                     Text("No bookmarks saved yet.")
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
                         .foregroundStyle(.white)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                 }
 
                 ForEach(store.items) { item in
