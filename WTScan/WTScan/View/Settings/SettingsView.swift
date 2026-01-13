@@ -17,7 +17,7 @@ struct SettingsView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
@@ -44,14 +44,14 @@ struct SettingsView: View {
                     .frame(width: 26, height: 26)
                     .background {
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(LinearGradient.optionBg)
+                            .fill(AppColor.Pink)
                             .frame(width: 40, height: 40)
                     }
                 
                 VStack(alignment: .leading, spacing: 5) {
-                    WTText(title: "Enable Face ID", color: .black, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
+                    WTText(title: "Enable Face ID", color: .white, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
                     
-                    WTText(title: "Secure app opening by enableing Face ID", color: .black, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
+                    WTText(title: "Secure app opening by enableing Face ID", color: .white, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
                 }
                 
                 Spacer(minLength: 0)
@@ -96,7 +96,7 @@ struct SettingsView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
         }
-        .background(Color.white)
+        .background(AppColor.Gray.opacity(0.12))
         .frame(maxWidth: .infinity, alignment: .leading)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .shadow(color: .black.opacity(0.07), radius: 2, x: 0, y: 0)
@@ -123,14 +123,14 @@ struct SettingsView: View {
                             )
                         }
                     }
-                    .background(Color.white)
+                    .background(AppColor.Gray.opacity(0.12))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .shadow(color: .black.opacity(0.07), radius: 2, x: 0, y: 0)
                     .padding(.horizontal, 20)
                     .padding(.top, 18)
                     
-                    WTText(title: Utility.getAppVersion(), color: .black, font: .system(size: 14, weight: .regular, design: .default), alignment: .center)
+                    WTText(title: Utility.getAppVersion(), color: .white, font: .system(size: 14, weight: .regular, design: .default), alignment: .center)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 12)
 
@@ -150,14 +150,14 @@ struct SettingsView: View {
                         .frame(width: 26, height: 26)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(LinearGradient.optionBg)
+                                .fill(AppColor.Pink)
                                 .frame(width: 40, height: 40)
                         }
                     
                     VStack(alignment: .leading, spacing: 5) {
-                        WTText(title: setting.title, color: .black, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
+                        WTText(title: setting.title, color: .white, font: .system(size: 16, weight: .bold, design: .default), alignment: .leading)
                         if !setting.subTitle.isEmpty {
-                            WTText(title: setting.subTitle, color: .black, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
+                            WTText(title: setting.subTitle, color: .white, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
                         }
                     }
                     
@@ -175,12 +175,12 @@ struct SettingsView: View {
             
             if showSeparator {
                 Rectangle()
-                    .fill(Color(hex: "E8E8E8"))
+                    .fill(.white.opacity(0.20))
                     .frame(height: 1)
                     .padding(.horizontal, 20)
             }
         }
-        .background(.white)
+        .background(AppColor.Gray.opacity(0.12))
         .onTapGesture {
             onTap()
         }

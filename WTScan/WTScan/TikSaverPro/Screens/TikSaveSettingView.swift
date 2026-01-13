@@ -24,6 +24,8 @@ struct TikSaveSettingView: View {
     private let appStoreURL = URL(string: WTConstant.appURL)!
     private let termsURL = URL(string: WTConstant.termsConditionURL)!
     private let privacyURL = URL(string: WTConstant.privacyPolicyURL)!
+    @State private var showMailAlert = false
+
     
     // MARK: - UI Components
     
@@ -56,18 +58,39 @@ struct TikSaveSettingView: View {
             .foregroundStyle(AppColor.Pink)
     }
     
+//    func openMailForFeedback() {
+//        let email = "narendrasorathiya004@gmail.com"
+//        let subject = "\(Utility.getAppName()) Contact Us"
+//        let body = "Hello, I need help with..."
+//    
+//        let emailString = "mailto:\(email)?subject=\(subject)&body=\(body)"
+//        if let emailURL = emailString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
+//            if let url = URL(string: emailURL) {
+//                if UIApplication.shared.canOpenURL(url) {
+//                    UIApplication.shared.open(url)
+//                }
+//            }
+//        }
+//    }
+    
     func openMailForFeedback() {
         let email = "narendrasorathiya004@gmail.com"
-        let subject = "\(Utility.getAppName()) Contact Us"
-        let body = "Hello, I need help with..."
-    
-        let emailString = "mailto:\(email)?subject=\(subject)&body=\(body)"
-        if let emailURL = emailString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-            if let url = URL(string: emailURL), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
+
+        var components = URLComponents()
+        components.scheme = "mailto"
+        components.path = email
+        components.queryItems = [
+            URLQueryItem(name: "subject", value: "\(Utility.getAppName()) Contact Us"),
+            URLQueryItem(name: "body", value: "Hello, I need help with...")
+        ]
+
+        guard let url = components.url else { return }
+
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url)
         }
     }
+
     
     var body: some View {
         ScreenContainer {
@@ -120,6 +143,12 @@ struct TikSaveSettingView: View {
         .sheet(item: $webItem) { item in
             TikSaveWebViewContainer(url: item.url, title: item.title)
         }
+        .alert("Mail App Not Available", isPresented: $showMailAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("Please configure the Mail app on your device to send feedback.")
+        }
+
     }
 }
 

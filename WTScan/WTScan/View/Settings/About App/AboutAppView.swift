@@ -16,13 +16,13 @@ struct AboutAppView: View {
             LinearGradient.wtGreen.ignoresSafeArea()
             
             ZStack {
-                Color.lightGreenBg.ignoresSafeArea()
+                LinearGradient.optionBg.ignoresSafeArea()
                     .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 
                 VStack(alignment: .leading, spacing: 0) {
                     aboutAppSection
                 }
-                .background(Color.lightGreenBg.opacity(0.1))
+                //.background(Color.lightGreenBg.opacity(0.1))
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 20, topTrailingRadius: 20))
                 .onTapGesture {
                     Utility.hideKeyboard()
@@ -72,9 +72,9 @@ struct AboutAppView: View {
     @ViewBuilder
     private func aboutRow(title: String, description: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            WTText(title: title, color: .black, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
+            WTText(title: title, color: .white, font: .system(size: 18, weight: .bold, design: .default), alignment: .leading)
             
-            WTText(title: description, color: .black, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
+            WTText(title: description, color: .white, font: .system(size: 14, weight: .regular, design: .default), alignment: .leading)
         }
     }
 }
