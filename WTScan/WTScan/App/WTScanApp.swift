@@ -16,7 +16,7 @@ struct WTScanApp: App {
     
     @StateObject var appState: AppState = AppState.shared
     @StateObject var alertManager: WTAlertManager = WTAlertManager.shared
-    @StateObject var navigationManager: NavigationManager = .shared
+    
     
     init() {
         _ = WTNetworkMonitor.shared
@@ -152,12 +152,7 @@ struct WTScanApp: App {
                 MainTabView()
             }
             else {
-                NavigationStack(path: $navigationManager.path) {
-                    HomeView(viewModel: appState.homeViewModel)
-                        .navigationDestination(for: NavigationDestination.self) { destination in
-                            NavigationRouter.destinationView(for: destination)
-                        }
-                }
+                STScanTabView(appState: self.appState)
             }
         case .none:
             EmptyView()

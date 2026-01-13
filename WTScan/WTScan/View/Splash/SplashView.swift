@@ -16,7 +16,7 @@ struct SplashView: View {
     
     var body: some View {
         ZStack {
-            Color.lightGreenBg.ignoresSafeArea()
+            LinearGradient.optionBg.ignoresSafeArea()
             
             if viewModel.showNoInternetView {
                 noInternetSection
@@ -43,7 +43,7 @@ struct SplashView: View {
                     Spacer()
                     
                     ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .btnDarkGreen))
+                        .progressViewStyle(CircularProgressViewStyle(tint: AppColor.Pink))
                         .scaleEffect(1.5)
                         .padding(.bottom, 40)
                 }
@@ -58,11 +58,13 @@ struct SplashView: View {
     @ViewBuilder
     private var appIconAndFaceIdSection: some View {
         VStack(alignment: .center, spacing: 0) {
-            VStack(alignment: .center, spacing: 0) {
-                Image(.icAppIcon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 106, height: 106)
+            if !viewModel.showAllowATTPopup {
+                VStack(alignment: .center, spacing: 0) {
+                    Image(.icAppIcon)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 106, height: 106)
+                }
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity).ignoresSafeArea()
         
@@ -74,7 +76,7 @@ struct SplashView: View {
                     Image(systemName: "faceid")
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(Color.btnDarkGreen)
+                        .foregroundStyle(AppColor.Pink)
                         .frame(width: 30, height: 30)
                 }
                 .padding(.top, 180)
@@ -88,9 +90,9 @@ struct SplashView: View {
             
             VStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .center, spacing: 30) {
-                    WTText(title: "Our app wants to stay free\nfor you", color: .black, font: .system(size: 21, weight: .medium, design: .default), alignment: .center)
+                    WTText(title: "Our app wants to stay free\nfor you", color: .white, font: .system(size: 21, weight: .medium, design: .default), alignment: .center)
                     
-                    WTText(title: "Ads help support our business. Tap \"Allow\" on the next screen to give permission to show ads that are more relevant to you.", color: Color(hex: "#484448"), font: .system(size: 17, weight: .regular, design: .default), alignment: .center)
+                    WTText(title: "Ads help support our business. Tap \"Allow\" on the next screen to give permission to show ads that are more relevant to you.", color: .white, font: .system(size: 17, weight: .regular, design: .default), alignment: .center)
                     
                     Button {
                         viewModel.showATTPopup()
@@ -99,7 +101,7 @@ struct SplashView: View {
                             WTText(title: "Continue", color: .white, font: .system(size: 17, weight: .medium, design: .default), alignment: .center)
                         }
                         .frame(maxWidth: .infinity, minHeight: 45, maxHeight: 45, alignment: .center)
-                        .background(Color.btnDarkGreen)
+                        .background(AppColor.Pink)
                         .clipShape(Capsule())
                     }
                 }
@@ -107,7 +109,7 @@ struct SplashView: View {
                 .padding(.horizontal, 35)
             }
             .frame(maxWidth: .infinity)
-            .background(Color.white)
+            .background(AppColor.Gray.opacity(0.12))
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal, 20)
 
@@ -121,16 +123,16 @@ struct SplashView: View {
             
             Image(systemName: "wifi.exclamationmark")
                 .font(.system(size: 40))
-                .foregroundColor(.red)
+                .foregroundColor(.white)
             
             Text("No Internet Connection")
                 .font(.headline)
-                .foregroundColor(.black)
+                .foregroundColor(.white)
             
             Text("Please connect to the internet to continue using the app.")
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
-                .foregroundColor(.gray)
+                .foregroundColor(.white)
                 .frame(width: 250)
                 .padding(.horizontal, 32)
             
