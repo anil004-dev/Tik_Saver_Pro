@@ -90,9 +90,9 @@ struct SplashView: View {
             
             VStack(alignment: .center, spacing: 0) {
                 VStack(alignment: .center, spacing: 30) {
-                    WTText(title: "Our app wants to stay free\nfor you", color: .white, font: .system(size: 21, weight: .medium, design: .default), alignment: .center)
+                    WTText(title: "Help Keep \(Utility.getAppName()) Free", color: .white, font: .system(size: 21, weight: .medium, design: .default), alignment: .center)
                     
-                    WTText(title: "Ads help support our business. Tap \"Allow\" on the next screen to give permission to show ads that are more relevant to you.", color: .white, font: .system(size: 17, weight: .regular, design: .default), alignment: .center)
+                    WTText(title: "We use ads to keep the app free. Your choice will help us show more relevant ads or generic ads. You can change your decision anytime in Settings.", color: .white, font: .system(size: 17, weight: .regular, design: .default), alignment: .center)
                     
                     Button {
                         viewModel.showATTPopup()

@@ -230,12 +230,12 @@ struct BookmarkView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Image("splash_logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 97, height: 39, alignment: .center)
-            }
+//            ToolbarItem(placement: .principal) {
+//                Image("splash_logo")
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 97, height: 39, alignment: .center)
+//            }
             ToolbarItem(placement: .topBarTrailing) {
                 navigationButton(action: showBookmarkButtonAction, icon: "bookmark.fill")
             }
