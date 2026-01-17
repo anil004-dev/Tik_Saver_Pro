@@ -17,6 +17,7 @@ enum WTOption {
     case qrCodeGenerator
     case qrCodeScanner
     case messageCounter
+    case repost
     case statusCaption
     case fontStyling
     case whatsAppGroupNameGenerator

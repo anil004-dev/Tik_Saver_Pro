@@ -10,6 +10,7 @@ import SwiftUI
 enum NavigationDestination: Hashable {
     case directMessage
     case textRepeater
+    case repost(selectedImage: UIImage?, selectedVideoURL: URL?)
     case stylishText
     case emojiText
     case clipboardTemplate

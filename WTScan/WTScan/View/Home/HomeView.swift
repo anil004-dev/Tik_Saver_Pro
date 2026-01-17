@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import _PhotosUI_SwiftUI
 
 struct HomeView: View {
     
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var alertManager: WTAlertManager
     @StateObject var appState = AppState.shared
-    
+
     private let columns = [
         GridItem(.flexible(), spacing: 20),
         GridItem(.flexible(), spacing: 20)
@@ -30,7 +31,6 @@ struct HomeView: View {
             .onTapGesture {
                 Utility.hideKeyboard()
             }
-            
             WTToastView()
                 .zIndex(9999)
                 .padding(.bottom, 50)
@@ -130,13 +130,23 @@ struct HomeView: View {
                 let arrOptions = section.rows
                 ForEach(0..<arrOptions.count, id: \.self) { index in
                     let option = arrOptions[index]
-                    optionRow(
-                        option: option,
-                        showSeparator: arrOptions.count != index+1,
-                        onTap: {
-                            viewModel.btnOptionAction(optionModel: option)
+                    if option.option == .repost {
+                        PhotosPicker(selection: $viewModel.selectedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
+                            optionRow(
+                                option: option,
+                                showSeparator: arrOptions.count != index+1
+                            )
                         }
-                    )
+                    }
+                    else {
+                        optionRow(
+                            option: option,
+                            showSeparator: arrOptions.count != index+1,
+                            onTap: {
+                                viewModel.btnOptionAction(optionModel: option)
+                            }
+                        )
+                    }
                 }
             }
             .background(AppColor.Gray.opacity(0.12))
@@ -147,8 +157,9 @@ struct HomeView: View {
     }
     
     @ViewBuilder
-    private func optionRow(option: WTOptionModel, showSeparator: Bool, onTap: @escaping (() -> Void)) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
+    private func optionRow(option: WTOptionModel, showSeparator: Bool, onTap: (() -> Void)? = nil) -> some View {
+        // Define the base content first to avoid code duplication
+        let content = VStack(alignment: .leading, spacing: 0) {
             VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .center, spacing: 16) {
                     Image(option.image)
@@ -187,9 +198,16 @@ struct HomeView: View {
                     .padding(.horizontal, 20)
             }
         }
-        //.background(.white)
-        .onTapGesture {
-            onTap()
+
+        // Conditionally apply the gesture
+        if let onTap = onTap {
+            content.onTapGesture {
+                onTap()
+            }
+        } else {
+            content
         }
     }
 }
+
+

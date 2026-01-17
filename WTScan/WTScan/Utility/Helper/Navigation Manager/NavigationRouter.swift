@@ -82,6 +82,9 @@ enum NavigationRouter {
         case .messageSchedulerReminder:
             MessageSchedulerReminderView()
                 .toolbar(.hidden, for: .tabBar)
+        case .repost(let selectedImage, let selectedVideoURL):
+            RepostView(image: selectedImage, videoURL: selectedVideoURL)
+                .toolbar(.hidden, for: .tabBar)
         }
     }
 }

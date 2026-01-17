@@ -8,6 +8,7 @@
 import UIKit
 import UserNotifications
 import FirebaseCore
+import FirebaseDatabaseInternal
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
@@ -16,6 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
         FirebaseApp.configure()
+        Database.database().isPersistenceEnabled = true
         UNUserNotificationCenter.current().delegate = self
         return true
     }
