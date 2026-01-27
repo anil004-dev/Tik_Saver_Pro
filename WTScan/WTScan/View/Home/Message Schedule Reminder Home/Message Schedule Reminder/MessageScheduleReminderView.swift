@@ -11,7 +11,7 @@ struct MessageSchedulerReminderView: View {
     
     @StateObject var viewModel = MessageSchedulerReminderViewModel()
 
-    @State private var freeCount: Int = UserDefaultManager.repostCount
+    @State private var freeCount: Int = UserDefaultManager.reminderCount
     @State private var isPremium = UserDefaultManager.isPremium
     @State private var showPurchase: Bool = false
     
@@ -113,7 +113,7 @@ struct MessageSchedulerReminderView: View {
                                 WTButton(
                                     title: "Schedule Reminders (Free \(limit) Limit)",
                                     onTap: {
-                                        UserDefaultManager.incrementRepost()
+                                        UserDefaultManager.incrementReminder()
                                         freeCount = freeCount + 1
                                         viewModel.btnScheduleReminderAction()
                                     }
