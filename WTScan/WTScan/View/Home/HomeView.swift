@@ -13,7 +13,8 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var alertManager: WTAlertManager
     @StateObject var appState = AppState.shared
-
+    
+    
     private let columns = [
         GridItem(.flexible(), spacing: 20),
         GridItem(.flexible(), spacing: 20)
@@ -66,6 +67,16 @@ struct HomeView: View {
                     )
                 }
             }
+            ToolbarItemGroup(placement: .topBarLeading) {
+                Button {
+                    self.viewModel.showPurchase = true
+                } label: {
+                    Image(systemName: "crown.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(Color(hex: "FFE08A"))
+                }
+            }
         }
         .onAppear {
             viewModel.onAppear()
@@ -76,6 +87,13 @@ struct HomeView: View {
                     items: [url]
                 )
                 .presentationDetents([.medium, .large])
+            }
+        }
+        .fullScreenCover(isPresented: $viewModel.showPurchase) {
+            
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: $viewModel.isPremium)
             }
         }
     }
@@ -131,10 +149,21 @@ struct HomeView: View {
                 ForEach(0..<arrOptions.count, id: \.self) { index in
                     let option = arrOptions[index]
                     if option.option == .repost {
-                        PhotosPicker(selection: $viewModel.selectedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
+                        if viewModel.isPremium {
+                            PhotosPicker(selection: $viewModel.selectedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
+                                optionRow(
+                                    option: option,
+                                    showSeparator: arrOptions.count != index+1
+                                )
+                            }
+                        }
+                        else {
                             optionRow(
                                 option: option,
-                                showSeparator: arrOptions.count != index+1
+                                showSeparator: arrOptions.count != index+1,
+                                onTap: {
+                                    viewModel.showPurchase = true
+                                }
                             )
                         }
                     }
@@ -143,7 +172,17 @@ struct HomeView: View {
                             option: option,
                             showSeparator: arrOptions.count != index+1,
                             onTap: {
-                                viewModel.btnOptionAction(optionModel: option)
+                                if viewModel.isPremium {
+                                    viewModel.btnOptionAction(optionModel: option)
+                                }
+                                else {
+                                    if option.isPro {
+                                        viewModel.showPurchase = true
+                                    }
+                                    else {
+                                        viewModel.btnOptionAction(optionModel: option)
+                                    }
+                                }
                             }
                         )
                     }
@@ -180,7 +219,14 @@ struct HomeView: View {
                     }
                     
                     Spacer(minLength: 0)
-                    
+                    if option.isPro && !viewModel.isPremium {
+                        Image(systemName: "crown.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(Color(hex: "FFE08A"))
+                            .frame(width: 25, height: 25)
+                            
+                    }
                     Image(systemName: "chevron.forward")
                         .resizable()
                         .scaledToFit()

@@ -18,6 +18,7 @@ struct TikSavePurchaseView: View {
     @State private var webItem: WebItem?
     @Binding var isPremium: Bool
     @State private var isScreenVisible: Bool = false
+    @State private var subscriptionType: Int = UserDefaultManager.subscriptionType
     
     @ViewBuilder func BulletPoint(title: String) -> some View {
         HStack {
@@ -32,14 +33,14 @@ struct TikSavePurchaseView: View {
         }
     }
     
-    @ViewBuilder func PlanView(name: String, price: String, period: String, isSelected: Bool) -> some View {
+    @ViewBuilder func PlanView(name: String, price: String, period: String, isSelected: Bool, isSubscribed: Bool) -> some View {
         HStack(spacing: 10.0) {
             Image(systemName: "checkmark.circle.fill")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 25.0, height: 25.0)
                 .foregroundStyle(AppColor.Pink)
-            Text(name)
+            Text("\(name) \(isSubscribed ? "(Subscribed)": "")")
                 .foregroundStyle(.white)
                 .font(.system(size: 18, weight: .semibold))
             Spacer()
@@ -69,7 +70,18 @@ struct TikSavePurchaseView: View {
                 let success = try await self.buy(product: product)
                 WTLoader.dismiss()
                 if success {
-                    UserDefaultManager.subscriptionType = 1
+                    if product.productIdentifier == InAppPurchaseProductID.kWeekly {
+                        subscriptionType = SubscriptionDuration.Weekly.rawValue
+                        UserDefaultManager.subscriptionType =  SubscriptionDuration.Weekly.rawValue
+                    }
+                    else if product.productIdentifier == InAppPurchaseProductID.kMonthly {
+                        subscriptionType = SubscriptionDuration.Monthly.rawValue
+                        UserDefaultManager.subscriptionType = SubscriptionDuration.Monthly.rawValue
+                    }
+                    else if product.productIdentifier == InAppPurchaseProductID.kYearly {
+                        subscriptionType = SubscriptionDuration.Yearly.rawValue
+                        UserDefaultManager.subscriptionType = SubscriptionDuration.Monthly.rawValue
+                    }
                     UserDefaultManager.isPremium = true
                     WTToastManager.shared.show("Purchase successful")
                     isPremium = true
@@ -127,6 +139,70 @@ struct TikSavePurchaseView: View {
         }
     }
     
+    func restore() {
+        WTLoader.show()
+        IAPManager.shared.restorePurchases { result in
+            switch result {
+            case .success(let success):
+                if success {
+                    self.verifyReceipt()
+                } else {
+                    WTLoader.dismiss()
+                    WTToastManager.shared.show("Nothing to restore!")
+                }
+                
+            case .failure(let error):
+                WTLoader.dismiss()
+                WTToastManager.shared.show(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func verifyReceipt() {
+        AppStoreReceiptValidator.shared.onRestoreHandler = { success in
+            AppStoreReceiptValidator.shared.onRestoreHandler = nil
+            WTLoader.dismiss()
+            if AppData.shared.isSubscriptionExpired {
+                WTToastManager.shared.show("Your subscription has expired")
+            } else {
+                WTToastManager.shared.show("Purchase restored successfully!")
+                if UserDefaultManager.subscriptionType == SubscriptionDuration.Weekly.rawValue {
+                    subscriptionType = SubscriptionDuration.Weekly.rawValue
+                }
+                else if UserDefaultManager.subscriptionType == SubscriptionDuration.Monthly.rawValue {
+                    subscriptionType = SubscriptionDuration.Monthly.rawValue
+                }
+                else if UserDefaultManager.subscriptionType == SubscriptionDuration.Yearly.rawValue {
+                    subscriptionType = SubscriptionDuration.Yearly.rawValue
+                }
+                
+                UserDefaultManager.isPremium = true
+                isPremium = true
+                dismiss()
+            }
+        }
+        AppStoreReceiptValidator.shared.verifyPurchase()
+    }
+    
+    func isSubscribed(produc: SKProduct) -> Bool {
+        if produc.productIdentifier == InAppPurchaseProductID.kWeekly {
+            if subscriptionType == SubscriptionDuration.Weekly.rawValue {
+                return true
+            }
+        }
+        else if produc.productIdentifier == InAppPurchaseProductID.kMonthly {
+            if subscriptionType == SubscriptionDuration.Monthly.rawValue {
+                return true
+            }
+        }
+        else if produc.productIdentifier == InAppPurchaseProductID.kYearly {
+            if subscriptionType == SubscriptionDuration.Yearly.rawValue {
+                return true
+            }
+        }
+        return false
+    }
+    
     var body: some View {
         ScreenContainer {
             ZStack {
@@ -146,11 +222,13 @@ struct TikSavePurchaseView: View {
                         VStack(spacing: 6) {
                             if products.count > 0 {
                                 ForEach(products, id: \.productIdentifier) { product in
+                                    let isSubscribed = self.isSubscribed(produc: product)
                                     PlanView(
                                         name: product.displayName,
                                         price: product.displayPrice,
                                         period: product.displayPeriod,
-                                        isSelected: selectedProduct?.productIdentifier == product.productIdentifier
+                                        isSelected: selectedProduct?.productIdentifier == product.productIdentifier,
+                                        isSubscribed: isSubscribed
                                     )
                                     .onTapGesture {
                                         selectedProduct = product
@@ -162,19 +240,22 @@ struct TikSavePurchaseView: View {
                                     name: "Weekly",
                                     price: "$0",
                                     period: "Per week",
-                                    isSelected: true
+                                    isSelected: true,
+                                    isSubscribed: false
                                 )
                                 PlanView(
                                     name: "Monthly",
                                     price: "$0",
                                     period: "Per month",
-                                    isSelected: false
+                                    isSelected: false,
+                                    isSubscribed: false
                                 )
                                 PlanView(
                                     name: "Yearly",
                                     price: "$0",
                                     period: "Per year",
-                                    isSelected: false
+                                    isSelected: false,
+                                    isSubscribed: false
                                 )
                             }
                         }
@@ -224,7 +305,7 @@ struct TikSavePurchaseView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    
+                    self.restore()
                 } label: {
                     Text("Restore")
                 }
@@ -249,7 +330,27 @@ struct TikSavePurchaseView: View {
                     $0.price.compare($1.price) == .orderedAscending
                 }
                 // ✅ Auto-select Weekly (first item)
-                selectedProduct = products.first
+                if UserDefaultManager.subscriptionType == SubscriptionDuration.Weekly.rawValue {
+                    subscriptionType = SubscriptionDuration.Weekly.rawValue
+                    if let index = self.products.firstIndex(where: {$0.productIdentifier == InAppPurchaseProductID.kWeekly}) {
+                        selectedProduct = products[index]
+                    }
+                }
+                else if UserDefaultManager.subscriptionType == SubscriptionDuration.Monthly.rawValue {
+                    subscriptionType = SubscriptionDuration.Monthly.rawValue
+                    if let index = self.products.firstIndex(where: {$0.productIdentifier == InAppPurchaseProductID.kMonthly}) {
+                        selectedProduct = products[index]
+                    }
+                }
+                else if UserDefaultManager.subscriptionType == SubscriptionDuration.Yearly.rawValue {
+                    subscriptionType = SubscriptionDuration.Yearly.rawValue
+                    if let index = self.products.firstIndex(where: {$0.productIdentifier == InAppPurchaseProductID.kYearly}) {
+                        selectedProduct = products[index]
+                    }
+                }
+                else {
+                    selectedProduct = products.first
+                }
                 WTLoader.dismiss()
             } catch {
                 WTLoader.dismiss()

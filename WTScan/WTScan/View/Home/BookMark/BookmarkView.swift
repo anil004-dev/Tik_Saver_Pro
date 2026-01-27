@@ -16,7 +16,7 @@ struct BookmarkView: View {
     @StateObject private var bookmarkStore = BookmarkStore()
     @State private var showBookmarkList = false
     @State private var showPurchase = false
-
+    
     func showBookmarkButtonAction() {
         showBookmarkList = true
     }
@@ -36,9 +36,6 @@ struct BookmarkView: View {
     }
     
     func saveButtonAction() {
-        self.showPurchase = true
-        return
-        
         guard let metadata = linkMetadata,
               let url = metadata.originalURL?.absoluteString ?? metadata.url?.absoluteString
         else {
@@ -242,6 +239,16 @@ struct BookmarkView: View {
 //            }
             ToolbarItem(placement: .topBarTrailing) {
                 navigationButton(action: showBookmarkButtonAction, icon: "bookmark.fill")
+            }
+            ToolbarItemGroup(placement: .topBarLeading) {
+                Button {
+                    self.showPurchase = true
+                } label: {
+                    Image(systemName: "crown.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(Color(hex: "FFE08A"))
+                }
             }
         }
         .navigationDestination(isPresented: $showBookmarkList) {

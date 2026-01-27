@@ -34,4 +34,5 @@ struct WTOptionModel {
     var isSystemImage: Bool = true
     let title: String
     let subTitle: String
+    let isPro: Bool
 }

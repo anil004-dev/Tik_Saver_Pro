@@ -218,21 +218,24 @@ class HomeViewModel: ObservableObject {
                         option: .directMessage,
                         image: .icDirectMessage,
                         title: "Direct Message",
-                        subTitle: "Send Message without Saving Number"
+                        subTitle: "Send Message without Saving Number",
+                        isPro: false
                     ),
                     
                     WTOptionModel(
                         option: .messageSchedulerReminder,
                         image: .icMessageSchedulerReminder,
                         title: "Message Scheduler Reminder",
-                        subTitle: "Schedule reminders for important messages"
+                        subTitle: "Schedule reminders for important messages",
+                        isPro: true
                     ),
                     
                     WTOptionModel(
                         option: .fakeChatPreviewGenerator,
                         image: .icChatPreviewGenerator,
                         title: "Chat Preview Generator",
-                        subTitle: "Create a mock chat layout for fun"
+                        subTitle: "Create a mock chat layout for fun",
+                        isPro: false
                     ),
                     
                     
@@ -240,7 +243,8 @@ class HomeViewModel: ObservableObject {
                         option: .messageCounter,
                         image: .icMessageCounter,
                         title: "Message Counter",
-                        subTitle: "Send direct message to anyone"
+                        subTitle: "Send direct message to anyone",
+                        isPro: false
                     )
                 ] :
                     [
@@ -248,21 +252,24 @@ class HomeViewModel: ObservableObject {
                             option: .messageSchedulerReminder,
                             image: .icMessageSchedulerReminder,
                             title: "Message Scheduler Reminder",
-                            subTitle: "Schedule reminders for important messages"
+                            subTitle: "Schedule reminders for important messages",
+                            isPro: true
                         ),
                         
                         WTOptionModel(
                             option: .messageCounter,
                             image: .icMessageCounter,
                             title: "Message Counter",
-                            subTitle: "Live character counter for your messages"
+                            subTitle: "Live character counter for your messages",
+                            isPro: false
                         ),
                         
                         WTOptionModel(
                             option: .repost,
                             image: .icArrowSquarepath,
                             title: "Repost",
-                            subTitle: "Repost your content to any social media"
+                            subTitle: "Repost your content to any social media",
+                            isPro: true
                         )
                     ]
             ),
@@ -274,14 +281,16 @@ class HomeViewModel: ObservableObject {
                         option: .qrCodeGenerator,
                         image: .icQrCodeGenerator,
                         title: "QR Code Generator",
-                        subTitle: "Generate QR codes for text"
+                        subTitle: "Generate QR codes for text",
+                        isPro: false
                     ),
                     
                     WTOptionModel(
                         option: .qrCodeScanner,
                         image: .icQrCodeScanner,
                         title: "QR Code Scanner",
-                        subTitle: "Scan QR codes using camera"
+                        subTitle: "Scan QR codes using camera",
+                        isPro: false
                     )
                 ]
             ),
@@ -293,42 +302,48 @@ class HomeViewModel: ObservableObject {
                         option: .stylishText,
                         image: .icConvertFancyFont,
                         title: "Stylish text",
-                        subTitle: "Convert normal text into fancy styles"
+                        subTitle: "Convert normal text into fancy styles",
+                        isPro: true
                     ),
                     
                     WTOptionModel(
                         option: .fontStyling,
                         image: .icFontStyling,
                         title: "Font Styling",
-                        subTitle: "Convert normal text to different styles"
+                        subTitle: "Convert normal text to different styles",
+                        isPro: true
                     ),
                     
                     WTOptionModel(
                         option: .emojiText,
                         image: .icEmojiText,
                         title: "Emoji Text",
-                        subTitle: "Convert letters into emoji-styled text"
+                        subTitle: "Convert letters into emoji-styled text",
+                        isPro: true
                     ),
                     
                     WTOptionModel(
                         option: .textRepeater,
                         image: .icTextRepeater,
                         title: "Text Repeater",
-                        subTitle: "Generate repeated text instantly"
+                        subTitle: "Generate repeated text instantly",
+                        isPro: false
                     ),
                     
                     WTOptionModel(
                         option: .textCaseConverter,
                         image: .icTextCaseConverter,
                         title: "Text Case Converter",
-                        subTitle: ""
+                        subTitle: "",
+                        isPro: false
                     ),
                     
                     WTOptionModel(
                         option: .clipboardManager,
                         image: .icClipboardText,
                         title: "Clipboard Manager",
-                        subTitle: "Save frequently used messages"
+                        subTitle: "Save frequently used messages",
+                        isPro: false
                     ),
                 ]
             ),
@@ -340,14 +355,16 @@ class HomeViewModel: ObservableObject {
                         option: .statusCaption,
                         image: .icStatusCaption,
                         title: "Status Caption",
-                        subTitle: ""
+                        subTitle: "",
+                        isPro: false
                     ),
                     
                     WTOptionModel(
                         option: .whatsAppGroupNameGenerator,
                         image: .icWhatsappGroupNameGenerator,
                         title: "Group Name Generator",
-                        subTitle: ""
+                        subTitle: "",
+                        isPro: false
                     ),
                     
                     
@@ -355,7 +372,8 @@ class HomeViewModel: ObservableObject {
                         option: .countdownStatusGenerator,
                         image: .icCountdownStatusGenerator,
                         title: "Countdown Status Generator",
-                        subTitle: ""
+                        subTitle: "",
+                        isPro: false
                     )
                 ]
             )
@@ -376,6 +394,8 @@ class HomeViewModel: ObservableObject {
     }
     @Published private var selectedImage: UIImage? = nil
     @Published private var selectedVideoURL: URL? = nil
+    @Published var isPremium = UserDefaultManager.isPremium
+    @Published var showPurchase: Bool = false
     
     var isFirstLanuch: Bool = true
     func onAppear() {
