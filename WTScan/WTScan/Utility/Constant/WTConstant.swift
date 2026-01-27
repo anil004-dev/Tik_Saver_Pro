@@ -15,18 +15,18 @@ struct WTConstant {
 }
 
 // MARK: - AdUnitID No Ads
-struct AdUnitID {
-  static let BannerAd = "ca-app-pub-3940256099942544/2435*281174"
-  static let Interstitial = "ca-app-pub-3940256099942544/4411*468910"
-  static let AppOpen = "ca-app-pub-3940256099942544/5575*463023"
-}
+//struct AdUnitID {
+//  static let BannerAd = "ca-app-pub-3940256099942544/2435*281174"
+//  static let Interstitial = "ca-app-pub-3940256099942544/4411*468910"
+//  static let AppOpen = "ca-app-pub-3940256099942544/5575*463023"
+//}
 
 // MARK: - AdUnitID Testing
-//struct AdUnitID {
-//  static let BannerAd = "ca-app-pub-3940256099942544/2435281174"
-//  static let Interstitial = "ca-app-pub-3940256099942544/4411468910"
-//  static let AppOpen = "ca-app-pub-3940256099942544/5575463023"
-//}
+struct AdUnitID {
+  static let BannerAd = "ca-app-pub-3940256099942544/2435281174"
+  static let Interstitial = "ca-app-pub-3940256099942544/4411468910"
+  static let AppOpen = "ca-app-pub-3940256099942544/5575463023"
+}
 
 // MARK: - AdUnitID Production
 //struct AdUnitID {

@@ -14,7 +14,9 @@ struct TikSaveRootView: View {
     @State private var isPresentPreview: Bool = false
     @State private var isLoading: Bool = false
     @State private var post: TikTokPost?
-    
+    @State private var isShowsubscriptionAlert: Bool = false
+    @State private var showPurchase: Bool = false
+    @State private var isPremium: Bool = UserDefaultManager.isPremium
     func navigationMessageButtonAction() {
         
     }
@@ -38,11 +40,16 @@ struct TikSaveRootView: View {
     }
     
     func findVideoButtonAction() {
-        InterstitialAdManager.shared.didFinishedAd = {
-            InterstitialAdManager.shared.didFinishedAd = nil
+        if self.isPremium {
             startFindVideo()
         }
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = {
+                InterstitialAdManager.shared.didFinishedAd = nil
+                startFindVideo()
+            }
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func startFindVideo() {
@@ -223,23 +230,54 @@ struct TikSaveRootView: View {
                     .scaledToFit()
                     .frame(width: 97, height: 39, alignment: .center)
             }
-//            if #available(iOS 26.0, *) {
-//                ToolbarItemGroup(placement: .topBarTrailing) {
-//                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
-//                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
-//                }
-//                .sharedBackgroundVisibility(.hidden)
-//            } else {
-//                ToolbarItemGroup(placement: .topBarTrailing) {
-//                    navigationButton(action: navigationMessageButtonAction, icon: "envelope")
-//                    navigationButton(action: navigationMoreButtonAction, icon: "ellipsis")
-//                }
-//            }
+            if #available(iOS 26.0, *) {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action: {showPurchase = true}) {
+                        Image("img_subscribe")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 69, height: 33)
+                    }
+                }
+                .sharedBackgroundVisibility(.hidden)
+            } else {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button(action: {showPurchase = true}) {
+                        Image("img_subscribe")
+                            .resizable()
+                            .scaledToFit()
+                    }
+                }
+            }
         }
         .navigationDestination(isPresented: $isPresentPreview) {
             if let videoItem = self.downloadedVideoURL, let post = self.post {
                 PostPreviewView(downloadedVideoURL: videoItem, post: post)
                     .toolbar(.hidden, for: .tabBar)
+            }
+        }
+        .alert(
+            "Your subscription has expired",
+            isPresented: $isShowsubscriptionAlert
+        ) {
+            Button("Subscribe") {
+                showPurchase = true
+            }
+            Button("Not now", role: .cancel) { }
+        } message: {
+            Text("Renew or upgrade your subscription to use interruption free app.")
+        }
+        .onAppear {
+            if AppState.shared.isSubscriptionExpired == true {
+                self.isShowsubscriptionAlert = true
+            }
+            isPremium = UserDefaultManager.isPremium
+        }
+        .fullScreenCover(isPresented: $showPurchase) {
+            
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: $isPremium)
             }
         }
     }

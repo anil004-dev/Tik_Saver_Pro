@@ -22,6 +22,7 @@ class AppState: ObservableObject {
     var isRequestingPermission: Bool = false
     var isSplashViewOpen: Bool = false
     var isLive: Bool {  UserDefaultManager.isAppLive }
+    var isSubscriptionExpired = false
     
     static let shared = AppState()
 

@@ -17,7 +17,9 @@ struct PostPreviewView: View {
     @State private var player: AVPlayer?
     @State private var isPlaying = false
     @State private var showPhotoPermissionAlert = false
-
+    @State private var showPurchase: Bool = false
+    @State private var isPremium: Bool = UserDefaultManager.isPremium
+    
     func saveVideoToPhotos(from fileURL: URL) {
         AppOpenAdManager.shared.isAdsDisabled = true
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
@@ -36,7 +38,12 @@ struct PostPreviewView: View {
                 DispatchQueue.main.async {
                     if success {
                         WTToastManager.shared.show("Video saved to Photos.")
-                        self.requestAppStoreReview()
+                        if self.isPremium {
+                            self.requestAppStoreReview()
+                        }
+                        else {
+                            self.showPurchase = true
+                        }
                     } else {
                         WTToastManager.shared.show("Couldn’t save the video. Please try again.")
                     }
@@ -57,13 +64,20 @@ struct PostPreviewView: View {
       }
     
     func downloadVideoButtonAction() {
-        InterstitialAdManager.shared.didFinishedAd = {
-            InterstitialAdManager.shared.didFinishedAd = nil
+        if self.isPremium {
             DispatchQueue.main.async {
                 self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
             }
         }
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = {
+                InterstitialAdManager.shared.didFinishedAd = nil
+                DispatchQueue.main.async {
+                    self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
+                }
+            }
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func openAppSettings() {
@@ -94,10 +108,12 @@ struct PostPreviewView: View {
     var body: some View {
         ScreenContainer {
             ZStack {
-                VStack {
-                    BannerAdContentView()
-                        .frame(height: 75)
-                    Spacer()
+                if !self.isPremium {
+                    VStack {
+                        BannerAdContentView()
+                            .frame(height: 75)
+                        Spacer()
+                    }
                 }
                 if let player {
                     AppVideoPlayer(player: player, showControls: false)
@@ -235,6 +251,9 @@ struct PostPreviewView: View {
                 }
                 
             }
+            .onAppear(perform: {
+                isPremium = UserDefaultManager.isPremium
+            })
             .alert("Photos Access Required", isPresented: $showPhotoPermissionAlert) {
                 Button("Settings") {
                     openAppSettings()
@@ -242,6 +261,13 @@ struct PostPreviewView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("Please allow Photos access to save videos to your library.")
+            }
+        }
+        .fullScreenCover(isPresented: $showPurchase) {
+            self.requestAppStoreReview()
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: $isPremium)
             }
         }
     }

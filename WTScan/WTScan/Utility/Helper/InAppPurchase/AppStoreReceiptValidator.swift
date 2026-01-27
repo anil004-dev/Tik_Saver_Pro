@@ -165,7 +165,7 @@ class AppStoreReceiptValidator {
         } else {
             print("\(type) Subscription Expired")
             DispatchQueue.main.async {
-                AppData.shared.isSubscriptionExpired = true
+                AppState.shared.isSubscriptionExpired = true
                 UserDefaultManager.isPremium = false
             }
         }

@@ -162,7 +162,7 @@ struct TikSavePurchaseView: View {
         AppStoreReceiptValidator.shared.onRestoreHandler = { success in
             AppStoreReceiptValidator.shared.onRestoreHandler = nil
             WTLoader.dismiss()
-            if AppData.shared.isSubscriptionExpired {
+            if AppState.shared.isSubscriptionExpired {
                 WTToastManager.shared.show("Your subscription has expired")
             } else {
                 WTToastManager.shared.show("Purchase restored successfully!")
