@@ -19,6 +19,13 @@ struct RepostView: View {
     // 1. Create a State object for the player to control playback
     @State private var player: AVPlayer?
     @State private var isPlaying: Bool = false
+    @State private var freeCount: Int = UserDefaultManager.repostCount
+    @State private var isPremium = UserDefaultManager.isPremium
+    @State private var showPurchase: Bool = false
+    
+    func freeLimit() -> Int {
+        return UserDefaultManager.maxFreeLimit - freeCount
+    }
     
     var body: some View {
         ScreenContainer {
@@ -82,10 +89,27 @@ struct RepostView: View {
                 WTTextField(placeHolder: "Add Caption", text: $caption)
                     .frame(height: 51)
                     .padding([.top, .bottom], 20)
-                WTButton(title: "Repost") {
-                    showShareSheet = true
+                let limit = self.freeLimit()
+                if isPremium {
+                    WTButton(title: "Repost") {
+                        showShareSheet = true
+                    }
+                    .padding(.bottom)
                 }
-                .padding(.bottom)
+                else if limit > 0 {
+                    WTButton(title: "Repost (Free \(limit) Limit)") {
+                        showShareSheet = true
+                        UserDefaultManager.incrementRepost()
+                        freeCount = freeCount + 1
+                    }
+                    .padding(.bottom)
+                }
+                else {
+                    WTButton(title: "Subcribe to repost") {
+                        showPurchase = true
+                    }
+                    .padding(.bottom)
+                }
             }
             .padding()
             .onTapGesture {
@@ -97,6 +121,13 @@ struct RepostView: View {
             TikSaveShareSheet(items: generateShareItems())
             // Optional: Fix for iPad to prevent crashes by constraining presentation
                 .presentationDetents([.medium, .large])
+        }
+        .fullScreenCover(isPresented: $showPurchase) {
+            
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: $isPremium)
+            }
         }
     }
     

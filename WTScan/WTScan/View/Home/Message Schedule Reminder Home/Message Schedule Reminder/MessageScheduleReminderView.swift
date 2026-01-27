@@ -11,6 +11,14 @@ struct MessageSchedulerReminderView: View {
     
     @StateObject var viewModel = MessageSchedulerReminderViewModel()
 
+    @State private var freeCount: Int = UserDefaultManager.repostCount
+    @State private var isPremium = UserDefaultManager.isPremium
+    @State private var showPurchase: Bool = false
+    
+    func freeLimit() -> Int {
+        return UserDefaultManager.maxFreeLimit - freeCount
+    }
+    
     var body: some View {
         ZStack {
             WTSwipeToBackGesture()
@@ -42,6 +50,13 @@ struct MessageSchedulerReminderView: View {
         }
         .ignoresSafeArea(.keyboard)
         .navigationTitle("Message Scheduler Reminder")
+        .fullScreenCover(isPresented: $showPurchase) {
+            
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: $isPremium)
+            }
+        }
     }
     
     private var messageScheduleReminderSection: some View {
@@ -85,13 +100,34 @@ struct MessageSchedulerReminderView: View {
                                 Spacer()
                             }
                             .padding(.bottom, 40)
+                            let limit = self.freeLimit()
+                            if isPremium {
+                                WTButton(
+                                    title: "Schedule Reminders",
+                                    onTap: {
+                                        viewModel.btnScheduleReminderAction()
+                                    }
+                                )
+                            }
+                            else if limit > 0 {
+                                WTButton(
+                                    title: "Schedule Reminders (Free \(limit) Limit)",
+                                    onTap: {
+                                        UserDefaultManager.incrementRepost()
+                                        freeCount = freeCount + 1
+                                        viewModel.btnScheduleReminderAction()
+                                    }
+                                )
+                            }
+                            else {
+                                WTButton(
+                                    title: "Subcribe to Schedule Reminders",
+                                    onTap: {
+                                        showPurchase = true
+                                    }
+                                )
+                            }
                             
-                            WTButton(
-                                title: "Schedule Reminders",
-                                onTap: {
-                                    viewModel.btnScheduleReminderAction()
-                                }
-                            )
                         }
                     }
                     .padding(16)

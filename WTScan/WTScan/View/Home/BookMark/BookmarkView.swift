@@ -15,6 +15,7 @@ struct BookmarkView: View {
     @State private var previewError: Bool = false
     @StateObject private var bookmarkStore = BookmarkStore()
     @State private var showBookmarkList = false
+    @State private var showPurchase = false
 
     func showBookmarkButtonAction() {
         showBookmarkList = true
@@ -35,6 +36,9 @@ struct BookmarkView: View {
     }
     
     func saveButtonAction() {
+        self.showPurchase = true
+        return
+        
         guard let metadata = linkMetadata,
               let url = metadata.originalURL?.absoluteString ?? metadata.url?.absoluteString
         else {
@@ -244,6 +248,14 @@ struct BookmarkView: View {
             BookmarkListView(store: bookmarkStore)
                 .toolbar(.hidden, for: .tabBar)
         }
+        .fullScreenCover(isPresented: $showPurchase) {
+            
+        } content: {
+            NavigationStack {
+                TikSavePurchaseView(isPremium: .constant(false))
+            }
+        }
+
     }
 }
 
