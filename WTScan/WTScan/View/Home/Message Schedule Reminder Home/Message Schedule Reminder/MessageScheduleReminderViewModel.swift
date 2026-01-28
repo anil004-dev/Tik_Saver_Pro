@@ -44,11 +44,7 @@ class MessageSchedulerReminderViewModel: ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now()+1) {
                     AppState.shared.isRequestingPermission = false
                 }
-
-                InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-                    guard let self = self else { return }
-                    InterstitialAdManager.shared.didFinishedAd = nil
-                    
+                if EntitlementManager.shared.hasPro {
                     WTAlertManager.shared.showAlert(
                         title: "Reminder Scheduled!",
                         message: "Your reminder has been added.",
@@ -58,8 +54,23 @@ class MessageSchedulerReminderViewModel: ObservableObject {
                         }
                     )
                 }
-                
-                InterstitialAdManager.shared.showAd()
+                else {
+                    InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                        guard let self = self else { return }
+                        InterstitialAdManager.shared.didFinishedAd = nil
+                        
+                        WTAlertManager.shared.showAlert(
+                            title: "Reminder Scheduled!",
+                            message: "Your reminder has been added.",
+                            leftButtonAction: { [weak self] in
+                                guard let _ = self else { return }
+                                NavigationManager.shared.pop()
+                            }
+                        )
+                    }
+                    
+                    InterstitialAdManager.shared.showAd()
+                }
             } catch {
                 WTAlertManager.shared.showAlert(title: "Error", message: "Unable to schedule reminder. Please try again.")
                 

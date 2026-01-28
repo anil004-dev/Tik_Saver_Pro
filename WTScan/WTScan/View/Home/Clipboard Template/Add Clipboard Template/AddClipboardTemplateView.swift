@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddClipboardTemplateView: View {
     @ObservedObject var viewModel: AddClipboardTemplateViewModel
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     var body: some View {
         NavigationStack {
@@ -32,11 +33,12 @@ struct AddClipboardTemplateView: View {
                 .ignoresSafeArea(edges: .bottom)
                 .padding(.top, 10)
                 
-                VStack(alignment: .center, spacing: 0) {
-                    Spacer()
-                    BannerAdContentView()
+                if !entitlementManager.hasPro {
+                    VStack(alignment: .center, spacing: 0) {
+                        Spacer()
+                        BannerAdContentView()
+                    }
                 }
-                
                 WTToastView()
                     .zIndex(9999)
             }

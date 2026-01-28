@@ -53,14 +53,19 @@ class QRGeneratorViewModel: ObservableObject {
         QRGenerator.shared.generate(from: stringData) { [weak self] qrImage in
             guard let self = self else { return }
             if let qrImage {
-                InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-                    guard let self = self else { return }
-                    InterstitialAdManager.shared.didFinishedAd = nil
-                    
+                if EntitlementManager.shared.hasPro {
                     self.showShareSheet(qrImage: qrImage)
                 }
-                
-                InterstitialAdManager.shared.showAd()
+                else {
+                    InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                        guard let self = self else { return }
+                        InterstitialAdManager.shared.didFinishedAd = nil
+                        
+                        self.showShareSheet(qrImage: qrImage)
+                    }
+                    
+                    InterstitialAdManager.shared.showAd()
+                }
             } else {
                 WTAlertManager.shared.showAlert(title: "Something went wrong!", message: "Unable to generate a qr code.")
             }

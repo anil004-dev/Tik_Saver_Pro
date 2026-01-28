@@ -10,6 +10,7 @@ import SwiftUI
 struct StatusCaptionView: View {
     
     @StateObject var viewModel = StatusCaptionViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     private let columns = [
         GridItem(.flexible(), spacing: 20),
         GridItem(.flexible(), spacing: 20)
@@ -35,12 +36,12 @@ struct StatusCaptionView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

@@ -24,16 +24,23 @@ class WPGroupNameHomeViewModel: ObservableObject {
     }
     
     func btnGenerateRandomNameAction() {
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             withAnimation {
                 self.randomGroupName = self.arrWPGroupCategories.flatMap { $0.names }.randomElement()
             }
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                withAnimation {
+                    self.randomGroupName = self.arrWPGroupCategories.flatMap { $0.names }.randomElement()
+                }
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func btnRemoveRandomNameAction() {

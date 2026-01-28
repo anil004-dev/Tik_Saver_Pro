@@ -10,6 +10,7 @@ import SwiftUI
 struct MessageTextCounterView: View {
     
     @StateObject var viewModel = MessageTextCounterViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     var body: some View {
         ZStack {
@@ -31,10 +32,11 @@ struct MessageTextCounterView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
             
             WTToastView()

@@ -82,15 +82,20 @@ class FakeChatPreviewGeneratorViewModel: ObservableObject {
             )
             return
         }
-        
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             let messagePreviewModel = MessagePreviewModel(profileImage: self.profileImage, profileName: self.profileName, arrMessage: self.arrMessage)
             NavigationManager.shared.push(to: .fakeChatPreview(messagePreview: messagePreviewModel))
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                let messagePreviewModel = MessagePreviewModel(profileImage: self.profileImage, profileName: self.profileName, arrMessage: self.arrMessage)
+                NavigationManager.shared.push(to: .fakeChatPreview(messagePreview: messagePreviewModel))
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
 }

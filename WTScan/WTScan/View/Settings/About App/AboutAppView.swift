@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AboutAppView: View {
     @StateObject var viewModel = AboutAppViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     var body: some View {
         ZStack {
@@ -30,12 +31,12 @@ struct AboutAppView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

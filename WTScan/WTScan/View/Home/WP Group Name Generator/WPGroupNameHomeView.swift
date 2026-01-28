@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WPGroupNameHomeView: View {
     @StateObject var viewModel = WPGroupNameHomeViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -35,12 +36,12 @@ struct WPGroupNameHomeView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

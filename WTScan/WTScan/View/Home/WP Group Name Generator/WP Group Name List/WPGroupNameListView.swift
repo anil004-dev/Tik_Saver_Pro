@@ -11,6 +11,7 @@ struct WPGroupNameListView: View {
     
     @StateObject private var viewModel: WPGroupNameListViewModel
     @EnvironmentObject var alertManager: WTAlertManager
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     init(groupCategory: WPGroupCategory) {
         _viewModel = StateObject(wrappedValue: WPGroupNameListViewModel(groupCategory: groupCategory))
@@ -36,12 +37,12 @@ struct WPGroupNameListView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

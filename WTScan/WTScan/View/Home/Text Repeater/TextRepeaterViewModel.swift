@@ -80,15 +80,19 @@ class TextRepeaterViewModel: ObservableObject {
             
             resultText += text
         }
-        
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             self.resultText = resultText
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                self.resultText = resultText
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func btnShareAction() {

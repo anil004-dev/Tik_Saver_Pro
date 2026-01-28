@@ -17,15 +17,21 @@ class MessageTextCounterViewModel: ObservableObject {
     }
     
     func btnCopyAction() {
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             UIPasteboard.general.string = self.messageText
             WTToastManager.shared.show("Message copied to clipboard")
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                UIPasteboard.general.string = self.messageText
+                WTToastManager.shared.show("Message copied to clipboard")
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func btnClearAction() {

@@ -167,13 +167,18 @@ class DirectMessageViewModel: ObservableObject {
             
             print(wpURL)
             
-            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-                guard let _ = self else { return }
-                InterstitialAdManager.shared.didFinishedAd = nil
+            if EntitlementManager.shared.hasPro {
                 UIApplication.shared.open(wpURL)
             }
-            
-            InterstitialAdManager.shared.showAd()
+            else {
+                InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                    guard let _ = self else { return }
+                    InterstitialAdManager.shared.didFinishedAd = nil
+                    UIApplication.shared.open(wpURL)
+                }
+                
+                InterstitialAdManager.shared.showAd()
+            }
         }
     }
 }

@@ -19,15 +19,21 @@ class CountdownStatusGeneratorViewModel: ObservableObject {
     }
     
     func btnCopyAction() {
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             UIPasteboard.general.string = "\(self.selectedEmoji.isEmpty ? "" : "\(self.selectedEmoji) ")"  + "\(self.getDaysLeft()) " + "days left untill my \(self.eventTitle)"
             WTToastManager.shared.show("Caption copied to clipboard")
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                UIPasteboard.general.string = "\(self.selectedEmoji.isEmpty ? "" : "\(self.selectedEmoji) ")"  + "\(self.getDaysLeft()) " + "days left untill my \(self.eventTitle)"
+                WTToastManager.shared.show("Caption copied to clipboard")
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func getDaysLeft() -> Int {

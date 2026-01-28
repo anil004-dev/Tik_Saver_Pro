@@ -11,6 +11,7 @@ struct StatusCaptionListView: View {
     
     @StateObject private var viewModel: StatusCaptionListViewModel
     @EnvironmentObject var alertManager: WTAlertManager
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     init(captionCategory: WTCaptionCategory) {
         _viewModel = StateObject(wrappedValue: StatusCaptionListViewModel(captionCategory: captionCategory))
@@ -36,12 +37,12 @@ struct StatusCaptionListView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

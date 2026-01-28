@@ -39,15 +39,22 @@ class AddClipboardTemplateViewModel: ObservableObject {
             return
         }
         
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             ClipboardManager.shared.addClipboard(clipboardText: cliboardText) { [weak self] _, _ in
                 self?.didTempCreated?()
             }
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                ClipboardManager.shared.addClipboard(clipboardText: cliboardText) { [weak self] _, _ in
+                    self?.didTempCreated?()
+                }
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
 }

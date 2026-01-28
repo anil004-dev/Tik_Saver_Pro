@@ -81,6 +81,7 @@ struct TikSavePurchaseView: View {
         await subscriptionsManager.buyProduct(product)
         WTLoader.dismiss()
         AppState.shared.isRequestingPermission = false
+        dismiss()
     }
     
     func restore() async {
@@ -95,6 +96,7 @@ struct TikSavePurchaseView: View {
             WTToastManager.shared.show("Restore scuccessfully!")
         }
         AppState.shared.isRequestingPermission = false
+        dismiss()
     }
 
     private func isSubscribed(_ product: Product) -> Bool {
@@ -112,9 +114,16 @@ struct TikSavePurchaseView: View {
                             .frame(width: 242.0, height: 97.0)
                         VStack(alignment: .leading, spacing: 9) {
                             BulletPoint(title: "No Ads")
-                            BulletPoint(title: "Download HD TikTok Video")
-                            BulletPoint(title: "Remove Watermark")
-                            BulletPoint(title: "Build Collections")
+                            if AppState.shared.isLive {
+                                BulletPoint(title: "Download HD TikTok Video")
+                                BulletPoint(title: "Remove Watermark")
+                                BulletPoint(title: "Build Collections")
+                            }
+                            else {
+                                BulletPoint(title: "Access all features")
+                                BulletPoint(title: "Stylish Text")
+                                BulletPoint(title: "Font Styling")
+                            }
                         }
                         .padding(.top, 35)
                         VStack(spacing: 6) {

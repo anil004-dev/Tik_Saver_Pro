@@ -40,16 +40,21 @@ class FakeChatPreviewViewModel: ObservableObject {
         }
         
         let image = renderView.renderImage(size: fullSize)
-        
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             self.showShareSheetView.chatPreviewImage = image
             self.showShareSheetView.sheet = true
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                self.showShareSheetView.chatPreviewImage = image
+                self.showShareSheetView.sheet = true
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
 }
 

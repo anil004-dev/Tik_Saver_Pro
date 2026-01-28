@@ -11,6 +11,7 @@ struct QRScanResultView: View {
     
     @StateObject private var viewModel: QRScanResultViewModel
     @EnvironmentObject var alertManager: WTAlertManager
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     init(qrText: String) {
         _viewModel = StateObject(wrappedValue: QRScanResultViewModel(qrText: qrText))
@@ -36,12 +37,12 @@ struct QRScanResultView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

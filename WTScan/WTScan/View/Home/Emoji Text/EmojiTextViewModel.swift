@@ -49,15 +49,19 @@ class EmojiTextViewModel: ObservableObject {
                 resultEmojiText += pattern + "\n\n"
             }
         }
-        
-        InterstitialAdManager.shared.didFinishedAd = { [weak self] in
-            guard let self = self else { return }
-            InterstitialAdManager.shared.didFinishedAd = nil
-            
+        if EntitlementManager.shared.hasPro {
             self.resultText = resultEmojiText
         }
-        
-        InterstitialAdManager.shared.showAd()
+        else {
+            InterstitialAdManager.shared.didFinishedAd = { [weak self] in
+                guard let self = self else { return }
+                InterstitialAdManager.shared.didFinishedAd = nil
+                
+                self.resultText = resultEmojiText
+            }
+            
+            InterstitialAdManager.shared.showAd()
+        }
     }
     
     func btnShareAction() {

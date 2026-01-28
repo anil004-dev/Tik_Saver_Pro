@@ -16,6 +16,7 @@ struct BookmarkView: View {
     @StateObject private var bookmarkStore = BookmarkStore()
     @State private var showBookmarkList = false
     @State private var showPurchase = false
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     func showBookmarkButtonAction() {
         showBookmarkList = true
@@ -42,22 +43,41 @@ struct BookmarkView: View {
             WTToastManager.shared.show("No preview available to save.")
             return
         }
-        InterstitialAdManager.shared.didFinishedAd = {
-            InterstitialAdManager.shared.didFinishedAd = nil
-            let bookmark = BookmarkItem(
-                url: url,
-                title: metadata.title
-            )
-            bookmarkStore.add(bookmark)
-            WTToastManager.shared.show("Bookmark saved")
-            
-            // Reset UI
-            bookmarkURL = ""
-            linkMetadata = nil
-            previewError = false
-        }
         
-        InterstitialAdManager.shared.showAd()
+        if entitlementManager.hasPro {
+            DispatchQueue.main.async {
+                let bookmark = BookmarkItem(
+                    url: url,
+                    title: metadata.title
+                )
+                bookmarkStore.add(bookmark)
+                WTToastManager.shared.show("Bookmark saved")
+                
+                // Reset UI
+                bookmarkURL = ""
+                linkMetadata = nil
+                previewError = false
+            }
+        }
+        else {
+            InterstitialAdManager.shared.didFinishedAd = {
+                InterstitialAdManager.shared.didFinishedAd = nil
+                DispatchQueue.main.async {
+                    let bookmark = BookmarkItem(
+                        url: url,
+                        title: metadata.title
+                    )
+                    bookmarkStore.add(bookmark)
+                    WTToastManager.shared.show("Bookmark saved")
+                    
+                    // Reset UI
+                    bookmarkURL = ""
+                    linkMetadata = nil
+                    previewError = false
+                }
+            }
+            InterstitialAdManager.shared.showAd()
+        }
     }
 
     

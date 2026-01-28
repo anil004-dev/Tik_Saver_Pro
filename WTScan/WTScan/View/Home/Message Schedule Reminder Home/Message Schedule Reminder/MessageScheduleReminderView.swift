@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MessageSchedulerReminderView: View {
     @StateObject var viewModel = MessageSchedulerReminderViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     var body: some View {
         ZStack {
             WTSwipeToBackGesture()
@@ -29,12 +30,12 @@ struct MessageSchedulerReminderView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

@@ -10,6 +10,7 @@ import SwiftUI
 struct TextRepeaterView: View {
     
     @StateObject var viewModel = TextRepeaterViewModel()
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     var body: some View {
         ZStack {
@@ -31,12 +32,12 @@ struct TextRepeaterView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

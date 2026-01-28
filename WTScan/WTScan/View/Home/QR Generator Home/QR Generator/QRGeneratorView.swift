@@ -11,6 +11,7 @@ import SwiftUI
 struct QRGeneratorView: View {
     
     @StateObject private var viewModel: QRGeneratorViewModel
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     init(qrOption: WTQROption) {
         _viewModel = StateObject(wrappedValue: QRGeneratorViewModel(qrOption: qrOption))
@@ -41,12 +42,12 @@ struct QRGeneratorView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .padding(.top, 10)
-            
-            VStack(alignment: .center, spacing: 0) {
-                Spacer()
-                BannerAdContentView()
+            if !entitlementManager.hasPro {
+                VStack(alignment: .center, spacing: 0) {
+                    Spacer()
+                    BannerAdContentView()
+                }
             }
-            
             WTToastView()
                 .zIndex(9999)
         }

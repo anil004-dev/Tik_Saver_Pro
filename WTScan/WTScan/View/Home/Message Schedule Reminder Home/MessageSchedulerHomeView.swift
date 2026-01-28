@@ -12,6 +12,7 @@ struct MessageSchedulerHomeView: View {
     @StateObject var viewModel = MessageSchedulerHomeViewModel()
     @EnvironmentObject var alertManager: WTAlertManager
     @Environment(\.modelContext) var context
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     var body: some View {
         ZStack {
@@ -54,8 +55,9 @@ struct MessageSchedulerHomeView: View {
                 }
                 .padding(.horizontal, 30)
                 .padding(.bottom, 30)
-
-                BannerAdContentView()
+                if !entitlementManager.hasPro {
+                    BannerAdContentView()
+                }
             }
             
             WTToastView()
