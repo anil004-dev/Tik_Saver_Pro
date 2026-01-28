@@ -10,7 +10,7 @@ import SwiftUI
 struct AddCollectionView: View {
 
     @Environment(\.dismiss) private var dismiss
-
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     @State private var name: String = ""
     @State private var errorMessage: String?
 
@@ -81,6 +81,25 @@ struct AddCollectionView: View {
     // MARK: - Create Logic
 
     private func createCollection() {
+        if entitlementManager.hasPro {
+            DispatchQueue.main.async {
+                self.applyCreate()
+            }
+        }
+        else {
+            InterstitialAdManager.shared.didFinishedAd = {
+                InterstitialAdManager.shared.didFinishedAd = nil
+                DispatchQueue.main.async {
+                    self.applyCreate()
+                }
+            }
+            InterstitialAdManager.shared.showAd()
+        }
+        
+        
+    }
+    
+    func applyCreate() {
         let trimmedName = name
             .trimmingCharacters(in: .whitespacesAndNewlines)
 

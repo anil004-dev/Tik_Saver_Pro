@@ -22,16 +22,16 @@ struct BookmarkView: View {
     }
     
     func pasteButtonAction() {
-        AppOpenAdManager.shared.isAdsDisabled = true
+        AppState.shared.isRequestingPermission = true
         if let pasted = UIPasteboard.general.string {
             bookmarkURL = pasted
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                AppOpenAdManager.shared.isAdsDisabled = false
+                AppState.shared.isRequestingPermission = false
             }
             findBookmarkPreview()
         }
         else {
-            AppOpenAdManager.shared.isAdsDisabled = false
+            AppState.shared.isRequestingPermission = false
         }
     }
     
@@ -259,7 +259,7 @@ struct BookmarkView: View {
             
         } content: {
             NavigationStack {
-                TikSavePurchaseView(isPremium: .constant(false))
+                TikSavePurchaseView()
             }
         }
 

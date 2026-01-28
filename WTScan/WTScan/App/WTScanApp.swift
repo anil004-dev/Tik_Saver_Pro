@@ -11,6 +11,9 @@ import SwiftData
 @main
 struct WTScanApp: App {
     
+    @StateObject private var entitlementManager: EntitlementManager
+    @StateObject private var subscriptionsManager: SubscriptionsManager
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @Environment(\.scenePhase) private var scenePhase
     
@@ -19,6 +22,12 @@ struct WTScanApp: App {
     
     
     init() {
+        let entitlementManager = EntitlementManager.shared
+        let subscriptionsManager = SubscriptionsManager(entitlementManager: entitlementManager)
+        
+        self._entitlementManager = StateObject(wrappedValue: entitlementManager)
+        self._subscriptionsManager = StateObject(wrappedValue: subscriptionsManager)
+        
         _ = WTNetworkMonitor.shared
         
         let appearance = UINavigationBarAppearance()
@@ -34,9 +43,6 @@ struct WTScanApp: App {
         UINavigationBar.appearance().compactAppearance = appearance
         
         UIBarButtonItem.appearance().tintColor = .white
-        
-        IAPManager.shared.startObserving()
-        AppStoreReceiptValidator.shared.verifyPurchase()
         InterstitialAdManager.shared.loadAd()
     }
     
@@ -59,6 +65,12 @@ struct WTScanApp: App {
                     
                     SplashView(viewModel: splashViewModel)
                 }
+            }
+            .environmentObject(entitlementManager)
+            .environmentObject(subscriptionsManager)
+            .task {
+                await subscriptionsManager.loadProducts()
+                await subscriptionsManager.updatePurchasedProducts()
             }
             .alert(
                 alertManager.alertModel.title,
@@ -87,7 +99,7 @@ struct WTScanApp: App {
                     showAuthenticationView()
                     
                     if LaunchTracker.shared.hasLaunchedOnce,
-                       LaunchTracker.shared.splashCompleted, appState.isSplashViewOpen == false, appState.isRequestingPermission == false {
+                       LaunchTracker.shared.splashCompleted, appState.isSplashViewOpen == false, appState.isRequestingPermission == false, !entitlementManager.hasPro {
                         AppOpenAdManager.shared.appOpenAdManagerDelegate = nil
                         AppOpenAdManager.shared.showAdIfAvailable()
                     } else {

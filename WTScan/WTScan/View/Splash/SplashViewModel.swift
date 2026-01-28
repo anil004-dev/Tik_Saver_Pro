@@ -142,7 +142,7 @@ class SplashViewModel: ObservableObject {
             await AppOpenAdManager.shared.loadAd()
             UserDefaultManager.isAdsConsentGathered = true
 
-            if AppOpenAdManager.shared.isAdAvailable() {
+            if AppOpenAdManager.shared.isAdAvailable() && !EntitlementManager.shared.hasPro {
                 AppOpenAdManager.shared.appOpenAdManagerDelegate = self
                 AppOpenAdManager.shared.showAdIfAvailable()
             } else {

@@ -12,6 +12,7 @@ struct HomeView: View {
     
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject var alertManager: WTAlertManager
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     @StateObject var appState = AppState.shared
     
     
@@ -93,7 +94,7 @@ struct HomeView: View {
             
         } content: {
             NavigationStack {
-                TikSavePurchaseView(isPremium: $viewModel.isPremium)
+                TikSavePurchaseView()
             }
         }
     }
@@ -149,7 +150,7 @@ struct HomeView: View {
                 ForEach(0..<arrOptions.count, id: \.self) { index in
                     let option = arrOptions[index]
                     if option.option == .repost {
-                        if viewModel.isPremium {
+                        if entitlementManager.hasPro {
                             PhotosPicker(selection: $viewModel.selectedItem, matching: .any(of: [.images, .videos]), photoLibrary: .shared()) {
                                 optionRow(
                                     option: option,
@@ -172,7 +173,7 @@ struct HomeView: View {
                             option: option,
                             showSeparator: arrOptions.count != index+1,
                             onTap: {
-                                if viewModel.isPremium {
+                                if entitlementManager.hasPro {
                                     viewModel.btnOptionAction(optionModel: option)
                                 }
                                 else {
@@ -219,7 +220,7 @@ struct HomeView: View {
                     }
                     
                     Spacer(minLength: 0)
-                    if option.isPro && !viewModel.isPremium {
+                    if option.isPro && !entitlementManager.hasPro {
                         Image(systemName: "crown.fill")
                             .resizable()
                             .scaledToFit()

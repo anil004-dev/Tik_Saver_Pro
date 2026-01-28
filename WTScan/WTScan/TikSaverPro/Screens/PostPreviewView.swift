@@ -18,13 +18,13 @@ struct PostPreviewView: View {
     @State private var isPlaying = false
     @State private var showPhotoPermissionAlert = false
     @State private var showPurchase: Bool = false
-    @State private var isPremium: Bool = UserDefaultManager.isPremium
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     func saveVideoToPhotos(from fileURL: URL) {
-        AppOpenAdManager.shared.isAdsDisabled = true
+        AppState.shared.isRequestingPermission = true
         PHPhotoLibrary.requestAuthorization(for: .addOnly) { status in
             DispatchQueue.main.async {
-                AppOpenAdManager.shared.isAdsDisabled = false
+                AppState.shared.isRequestingPermission = false
             }
             guard status == .authorized || status == .limited else {
                 DispatchQueue.main.async {
@@ -38,7 +38,7 @@ struct PostPreviewView: View {
                 DispatchQueue.main.async {
                     if success {
                         WTToastManager.shared.show("Video saved to Photos.")
-                        if self.isPremium {
+                        if entitlementManager.hasPro {
                             self.requestAppStoreReview()
                         }
                         else {
@@ -64,7 +64,7 @@ struct PostPreviewView: View {
       }
     
     func downloadVideoButtonAction() {
-        if self.isPremium {
+        if entitlementManager.hasPro {
             DispatchQueue.main.async {
                 self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
             }
@@ -108,7 +108,7 @@ struct PostPreviewView: View {
     var body: some View {
         ScreenContainer {
             ZStack {
-                if !self.isPremium {
+                if !entitlementManager.hasPro {
                     VStack {
                         BannerAdContentView()
                             .frame(height: 75)
@@ -118,7 +118,7 @@ struct PostPreviewView: View {
                 if let player {
                     AppVideoPlayer(player: player, showControls: false)
                         .ignoresSafeArea()
-                        .padding(.top, 75)
+                        .padding(.top, entitlementManager.hasPro ? 0 : 75)
                     Color.clear
                         .contentShape(Rectangle()) // 👈 important
                         .onTapGesture {
@@ -130,7 +130,7 @@ struct PostPreviewView: View {
                                 isPlaying = true
                             }
                         }
-                        .padding(.top, 75)
+                        .padding(.top, entitlementManager.hasPro ? 0 : 75)
                     if !isPlaying {
                         Image(systemName: "play.circle.fill")
                             .resizable()
@@ -251,9 +251,6 @@ struct PostPreviewView: View {
                 }
                 
             }
-            .onAppear(perform: {
-                isPremium = UserDefaultManager.isPremium
-            })
             .alert("Photos Access Required", isPresented: $showPhotoPermissionAlert) {
                 Button("Settings") {
                     openAppSettings()
@@ -267,7 +264,7 @@ struct PostPreviewView: View {
             self.requestAppStoreReview()
         } content: {
             NavigationStack {
-                TikSavePurchaseView(isPremium: $isPremium)
+                TikSavePurchaseView()
             }
         }
     }

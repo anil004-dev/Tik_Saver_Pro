@@ -25,7 +25,7 @@ struct TikSaveSettingView: View {
     private let termsURL = URL(string: WTConstant.termsConditionURL)!
     private let privacyURL = URL(string: WTConstant.privacyPolicyURL)!
     @State private var showMailAlert = false
-
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     
     // MARK: - UI Components
     
@@ -94,46 +94,56 @@ struct TikSaveSettingView: View {
     
     var body: some View {
         ScreenContainer {
-            List {
-                // MARK: App Section
-                Section(header: Header(title: "App")) {
-                    Button {
-                        UIApplication.shared.open(appStoreReviewURL)
-                    } label: {
-                        Cell(title: "Rate Us", icon: "star.fill")
+            ZStack {
+                List {
+                    // MARK: App Section
+                    Section(header: Header(title: "App")) {
+                        Button {
+                            UIApplication.shared.open(appStoreReviewURL)
+                        } label: {
+                            Cell(title: "Rate Us", icon: "star.fill")
+                        }
+                        
+                        Button {
+                            self.openMailForFeedback()
+                        } label: {
+                            Cell(title: "Leave Feedback", icon: "bubble.left.and.bubble.right.fill")
+                        }
+                        
+                        Button {
+                            showShare = true
+                        } label: {
+                            Cell(title: "Share App", icon: "square.and.arrow.up")
+                        }
                     }
+                    .listRowBackground(Color.black)
                     
-                    Button {
-                        self.openMailForFeedback()
-                    } label: {
-                        Cell(title: "Leave Feedback", icon: "bubble.left.and.bubble.right.fill")
+                    // MARK: Privacy Section
+                    Section(header: Header(title: "Privacy settings")) {
+                        Button {
+                            webItem = WebItem(url: termsURL, title: "Terms of Use")
+                        } label: {
+                            Cell(title: "Terms of Use", icon: "doc.text.fill")
+                        }
+                        Button {
+                            webItem = WebItem(url: privacyURL, title: "Privacy Policy")
+                        } label: {
+                            Cell(title: "Privacy Policy", icon: "lock.shield.fill")
+                        }
                     }
-                    
-                    Button {
-                        showShare = true
-                    } label: {
-                        Cell(title: "Share App", icon: "square.and.arrow.up")
+                    .listRowBackground(Color.black)
+                }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
+                .padding(.bottom, entitlementManager.hasPro ? 0 : 75)
+                if !entitlementManager.hasPro {
+                    VStack {
+                        Spacer()
+                        BannerAdContentView()
+                            .frame(height: 75)
                     }
                 }
-                .listRowBackground(Color.black)
-                
-                // MARK: Privacy Section
-                Section(header: Header(title: "Privacy settings")) {
-                    Button {
-                        webItem = WebItem(url: termsURL, title: "Terms of Use")
-                    } label: {
-                        Cell(title: "Terms of Use", icon: "doc.text.fill")
-                    }
-                    Button {
-                        webItem = WebItem(url: privacyURL, title: "Privacy Policy")
-                    } label: {
-                        Cell(title: "Privacy Policy", icon: "lock.shield.fill")
-                    }
-                }
-                .listRowBackground(Color.black)
             }
-            .scrollContentBackground(.hidden)
-            .background(Color.clear)
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)

@@ -21,7 +21,8 @@ struct DownloadedVideosView: View {
     @State private var showDeleteAlert = false
     @State private var videoToDelete: DownloadedVideo?
     @State private var videoToAdd: DownloadedVideo?
-
+    @EnvironmentObject private var entitlementManager: EntitlementManager
+    
     private let spacing: CGFloat = 15
 
     private var columns: [GridItem] {
@@ -94,19 +95,29 @@ struct DownloadedVideosView: View {
     // MARK: - Body
     var body: some View {
         ScreenContainer {
-            if videos.isEmpty {
-                emptyStateView
-            } else {
-                GeometryReader { geo in
-                    let cellWidth = (geo.size.width - spacing * 3) / 2
-
-                    ScrollView {
-                        LazyVGrid(columns: columns, spacing: spacing) {
-                            ForEach(videos) { video in
-                                videoCell(video, width: cellWidth)
+            ZStack {
+                if videos.isEmpty {
+                    emptyStateView
+                } else {
+                    GeometryReader { geo in
+                        let cellWidth = (geo.size.width - spacing * 3) / 2
+                        
+                        ScrollView {
+                            LazyVGrid(columns: columns, spacing: spacing) {
+                                ForEach(videos) { video in
+                                    videoCell(video, width: cellWidth)
+                                }
                             }
+                            .padding(spacing)
                         }
-                        .padding(spacing)
+                    }
+                    .padding(.bottom, entitlementManager.hasPro ? 0 : 75)
+                }
+                if !entitlementManager.hasPro {
+                    VStack {
+                        Spacer()
+                        BannerAdContentView()
+                            .frame(height: 75)
                     }
                 }
             }
@@ -182,7 +193,20 @@ struct DownloadedVideosView: View {
     private func menuButton(_ video: DownloadedVideo) -> some View {
         Menu {
             Button {
-                videoToAdd = video
+                if entitlementManager.hasPro {
+                    DispatchQueue.main.async {
+                        videoToAdd = video
+                    }
+                }
+                else {
+                    InterstitialAdManager.shared.didFinishedAd = {
+                        InterstitialAdManager.shared.didFinishedAd = nil
+                        DispatchQueue.main.async {
+                            videoToAdd = video
+                        }
+                    }
+                    InterstitialAdManager.shared.showAd()
+                }
             } label: {
                 Label("Add to Collection", systemImage: "folder")
             }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MyVideoCollectionView: View {
-
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     @State private var collections: [VideoCollection] = []
     @State private var showAddCollection = false
     @State private var showDeleteAlert = false
@@ -145,10 +145,20 @@ struct MyVideoCollectionView: View {
 
     var body: some View {
         ScreenContainer {
-            if collections.isEmpty {
-                emptyStateView
-            } else {
-                collectionGridView
+            ZStack {
+                if collections.isEmpty {
+                    emptyStateView
+                } else {
+                    collectionGridView
+                        .padding(.bottom, entitlementManager.hasPro ? 0 : 75)
+                }
+                if !entitlementManager.hasPro {
+                    VStack {
+                        Spacer()
+                        BannerAdContentView()
+                            .frame(height: 75)
+                    }
+                }
             }
         }
         .navigationTitle("Collections")

@@ -16,7 +16,7 @@ struct TikSaveRootView: View {
     @State private var post: TikTokPost?
     @State private var isShowsubscriptionAlert: Bool = false
     @State private var showPurchase: Bool = false
-    @State private var isPremium: Bool = UserDefaultManager.isPremium
+    @EnvironmentObject private var entitlementManager: EntitlementManager
     func navigationMessageButtonAction() {
         
     }
@@ -26,21 +26,21 @@ struct TikSaveRootView: View {
     }
     
     func pasteButtonAction() {
-        AppOpenAdManager.shared.isAdsDisabled = true
+        AppState.shared.isRequestingPermission = true
         if let pasted = UIPasteboard.general.string {
             postURL = pasted
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                AppOpenAdManager.shared.isAdsDisabled = false
+                AppState.shared.isRequestingPermission = true
             }
             findVideoButtonAction()
         }
         else {
-            AppOpenAdManager.shared.isAdsDisabled = false
+            AppState.shared.isRequestingPermission = true
         }
     }
     
     func findVideoButtonAction() {
-        if self.isPremium {
+        if entitlementManager.hasPro {
             startFindVideo()
         }
         else {
@@ -219,6 +219,13 @@ struct TikSaveRootView: View {
                 }
                 WTToastView()
                     .zIndex(9999)
+                if !entitlementManager.hasPro {
+                    VStack {
+                        Spacer()
+                        BannerAdContentView()
+                            .frame(height: 75)
+                    }
+                }
             }
             .hideKeyboardOnTap()
         }
@@ -256,28 +263,11 @@ struct TikSaveRootView: View {
                     .toolbar(.hidden, for: .tabBar)
             }
         }
-        .alert(
-            "Your subscription has expired",
-            isPresented: $isShowsubscriptionAlert
-        ) {
-            Button("Subscribe") {
-                showPurchase = true
-            }
-            Button("Not now", role: .cancel) { }
-        } message: {
-            Text("Renew or upgrade your subscription to use interruption free app.")
-        }
-        .onAppear {
-            if AppState.shared.isSubscriptionExpired == true {
-                self.isShowsubscriptionAlert = true
-            }
-            isPremium = UserDefaultManager.isPremium
-        }
         .fullScreenCover(isPresented: $showPurchase) {
             
         } content: {
             NavigationStack {
-                TikSavePurchaseView(isPremium: $isPremium)
+                TikSavePurchaseView()
             }
         }
     }

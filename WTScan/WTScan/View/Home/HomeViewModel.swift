@@ -394,7 +394,6 @@ class HomeViewModel: ObservableObject {
     }
     @Published private var selectedImage: UIImage? = nil
     @Published private var selectedVideoURL: URL? = nil
-    @Published var isPremium = UserDefaultManager.isPremium
     @Published var showPurchase: Bool = false
     
     var isFirstLanuch: Bool = true

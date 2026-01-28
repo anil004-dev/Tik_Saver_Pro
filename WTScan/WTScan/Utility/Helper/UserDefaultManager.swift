@@ -55,22 +55,4 @@ class UserDefaultManager {
             userDefault.setValue(newValue, forKey: UserDefaultKeys.isAdsConsentGathered)
         }
     }
-    
-    static var subscriptionType: Int {
-        get {
-            return userDefault.integer(forKey: UserDefaultKeys.subscriptionType)
-        }
-        set {
-            userDefault.setValue(newValue, forKey: UserDefaultKeys.subscriptionType)
-        }
-    }
-    
-    static var isPremium: Bool {
-        get {
-            return userDefault.bool(forKey: UserDefaultKeys.isWTScanPremium)
-        }
-        set {
-            userDefault.setValue(newValue, forKey: UserDefaultKeys.isWTScanPremium)
-        }
-    }
 }

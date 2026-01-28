@@ -85,31 +85,40 @@ extension View {
     }
 }
 
-extension SKProduct {
-    var displayPrice: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = priceLocale
-        return formatter.string(from: price) ?? ""
-    }
+import StoreKit
 
+extension Product {
+    /// Subscription period shown in UI
     var displayPeriod: String {
-        let productID = productIdentifier
-        switch productID {
-        case InAppPurchaseProductID.kWeekly:   return "Per week"
-        case InAppPurchaseProductID.kMonthly:  return "Per month"
-        case InAppPurchaseProductID.kYearly: return "Per year"
-        default: return ""
+        switch id {
+        case InAppPurchaseProductID.kWeekly:
+            return "Per week"
+
+        case InAppPurchaseProductID.kMonthly:
+            return "Per month"
+
+        case InAppPurchaseProductID.kYearly:
+            return "Per year"
+
+        default:
+            return ""
         }
     }
-    
+
+    /// Friendly plan name for UI
     var displayName: String {
-        let productID = productIdentifier
-        switch productID {
-        case InAppPurchaseProductID.kWeekly:   return "Weekly"
-        case InAppPurchaseProductID.kMonthly:  return "Monthly"
-        case InAppPurchaseProductID.kYearly: return "Yearly"
-        default: return ""
+        switch id {
+        case InAppPurchaseProductID.kWeekly:
+            return "Weekly"
+
+        case InAppPurchaseProductID.kMonthly:
+            return "Monthly"
+
+        case InAppPurchaseProductID.kYearly:
+            return "Yearly"
+
+        default:
+            return self.displayName
         }
     }
 }
