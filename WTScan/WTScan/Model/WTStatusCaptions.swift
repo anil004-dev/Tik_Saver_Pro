@@ -16,7 +16,6 @@ struct WTCaptionCategory: Codable, Identifiable, Hashable {
     let id: Int
     let name: String
     let imageName: String
-    let isPaid: Bool
     let quotes: [WTCaptionItem]
     
     static func loadCaptionsCategory() -> [WTCaptionCategory] {

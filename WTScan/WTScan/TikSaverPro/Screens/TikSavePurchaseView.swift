@@ -20,11 +20,10 @@ struct TikSavePurchaseView: View {
     
     @ViewBuilder func BulletPoint(title: String) -> some View {
         HStack {
-            Image(systemName: "checkmark.circle.fill")
+            Image("ic_pin_checkmark")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20.0, height: 20.0)
-                .foregroundStyle(AppColor.Pink)
             Text(title)
                 .foregroundStyle(.white)
                 .font(.system(size: 17, weight: .medium))
@@ -33,11 +32,10 @@ struct TikSavePurchaseView: View {
     
     @ViewBuilder func PlanView(name: String, price: String, period: String, isSelected: Bool, isSubscribed: Bool) -> some View {
         HStack(spacing: 10.0) {
-            Image(systemName: "checkmark.circle.fill")
+            Image(isSelected ? "ic_pin_checkmark" : "ic_uncheck_gray")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 25.0, height: 25.0)
-                .foregroundStyle(AppColor.Pink)
             Text("\(name) \(isSubscribed ? "(Subscribed)": "")")
                 .foregroundStyle(.white)
                 .font(.system(size: 18, weight: .semibold))

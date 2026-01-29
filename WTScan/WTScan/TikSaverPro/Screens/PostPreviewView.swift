@@ -19,6 +19,8 @@ struct PostPreviewView: View {
     @State private var showPhotoPermissionAlert = false
     @State private var showPurchase: Bool = false
     @EnvironmentObject private var entitlementManager: EntitlementManager
+    @State private var playerViewID = UUID()
+
     
     func saveVideoToPhotos(from fileURL: URL) {
         AppState.shared.isRequestingPermission = true
@@ -64,6 +66,9 @@ struct PostPreviewView: View {
       }
     
     func downloadVideoButtonAction() {
+        if player != nil {
+            player!.pause()
+        }
         if entitlementManager.hasPro {
             DispatchQueue.main.async {
                 self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
@@ -73,6 +78,7 @@ struct PostPreviewView: View {
             InterstitialAdManager.shared.didFinishedAd = {
                 InterstitialAdManager.shared.didFinishedAd = nil
                 DispatchQueue.main.async {
+                    self.playerViewID = UUID()
                     self.saveVideoToPhotos(from: downloadedVideoURL.videoURL)
                 }
             }
@@ -119,6 +125,14 @@ struct PostPreviewView: View {
                     AppVideoPlayer(player: player, showControls: false)
                         .ignoresSafeArea()
                         .padding(.top, entitlementManager.hasPro ? 0 : 75)
+                        .id(playerViewID)
+                    if !isPlaying {
+                        Image(systemName: "play.circle.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundStyle(.white)
+                            .padding()
+                    }
                     Color.clear
                         .contentShape(Rectangle()) // 👈 important
                         .onTapGesture {
@@ -131,13 +145,6 @@ struct PostPreviewView: View {
                             }
                         }
                         .padding(.top, entitlementManager.hasPro ? 0 : 75)
-                    if !isPlaying {
-                        Image(systemName: "play.circle.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .foregroundStyle(.white)
-                            .padding()
-                    }
                 }
                 else {
                     ProgressView()
@@ -262,6 +269,11 @@ struct PostPreviewView: View {
         }
         .fullScreenCover(isPresented: $showPurchase) {
             self.requestAppStoreReview()
+            playerViewID = UUID()   // 🔁 recreate AVPlayerViewController
+            if self.player != nil && self.player!.timeControlStatus != .playing {
+                player?.play()
+                isPlaying = true
+            }
         } content: {
             NavigationStack {
                 TikSavePurchaseView()

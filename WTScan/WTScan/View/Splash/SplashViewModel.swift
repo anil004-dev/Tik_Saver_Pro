@@ -57,27 +57,13 @@ class SplashViewModel: ObservableObject {
     }
     
     func initialiseAdsSDK(attStatus: ATTrackingManager.AuthorizationStatus) {
-        
-        if attStatus == .authorized {
-            Task { @MainActor in
-                GoogleMobileAdsConsentManager.shared.gatherConsent { consentError in
-                    if let consentError {
-                        print("Error: \(consentError.localizedDescription)")
-                    }
-                    
-                    if GoogleMobileAdsConsentManager.shared.canRequestAds {
-                        self.checkAppLive()
-                    }
+        Task { @MainActor in
+            GoogleMobileAdsConsentManager.shared.gatherConsent { consentError in
+                if let consentError {
+                    print("Error: \(consentError.localizedDescription)")
                 }
-                
-                if GoogleMobileAdsConsentManager.shared.canRequestAds {
-                    self.checkAppLive()
-                }
+                self.checkAppLive()
             }
-        }
-        else {
-            MobileAds.shared.start()
-            self.checkAppLive()
         }
     }
     
@@ -116,9 +102,9 @@ class SplashViewModel: ObservableObject {
                         else {
                             UserDefaultManager.isAppLive = true
                         }
-                        
-                        GoogleMobileAdsConsentManager.shared.startGoogleMobileAdsSDK()
-
+                        if GoogleMobileAdsConsentManager.shared.canRequestAds {
+                            GoogleMobileAdsConsentManager.shared.startGoogleMobileAdsSDK()
+                        }
                         if UserDefaultManager.isAppLive == true {
                             self.loadAppOpenAdAndNavigate()
                         }
